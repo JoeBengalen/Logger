@@ -1,0 +1,19 @@
+{
+    "name": "joebengalen/logger",
+    "description": "Simple logger library based on the PSR-3-logger-interface.",
+    "require": {
+        "psr/log": "~1.0"
+    },
+    
+    "authors": [
+        {
+            "name": "JoeBengalen",
+            "email": "JoeBengalen@users.noreply.github.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "JoeBengalen\\Logger\\": "src/"
+        }
+    }
+}
