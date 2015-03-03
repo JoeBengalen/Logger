@@ -2,7 +2,7 @@
 
 namespace JoeBengalen\Logger\Handler;
 
-abstract class AbstractHandler implements HandlerInterface
+abstract class AbstractHandler 
 {
     /**
      * Interpolates context values into the message placeholders.
@@ -23,4 +23,6 @@ abstract class AbstractHandler implements HandlerInterface
         // interpolate replacement values into the message and return
         return strtr($message, $replace);
     }
+    
+    abstract public function __invoke($level, $message, array $context = []);
 }

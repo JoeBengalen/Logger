@@ -7,7 +7,6 @@ namespace JoeBengalen\Logger\Handler;
  */
 class FileHandler extends AbstractHandler
 {
-    
     protected $file;
     protected $options;
 
@@ -20,7 +19,7 @@ class FileHandler extends AbstractHandler
         ], $options);
     }
 
-    public function log($level, $message, array $context = [])
+    public function __invoke($level, $message, array $context = [])
     {
         file_put_contents($this->file, $this->format($level, $message, $context), FILE_APPEND);
     }

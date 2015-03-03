@@ -7,7 +7,7 @@ namespace JoeBengalen\Logger\Handler;
  */
 class ErrorLogHandler extends AbstractHandler
 {
-    public function log($level, $message, array $context = array())
+    public function __invoke($level, $message, array $context = array())
     {
         error_log($this->format($level, $message, $context));
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {

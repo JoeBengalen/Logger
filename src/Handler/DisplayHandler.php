@@ -17,7 +17,7 @@ class DisplayHandler extends AbstractHandler
         ], $options);
     }
 
-    public function log($level, $message, array $context = [])
+    public function __invoke($level, $message, array $context = [])
     {
         $interpolatedMessage = $this->interpolate($message, $context);
         $now                 = new \DateTime('NOW');
