@@ -14,6 +14,11 @@ class DummyHandler
     {
         echo $message;
     }
+    
+    public static function staticEchoLevelMessage($level, $message, array $context)
+    {
+        echo "$level::$message";
+    }
 
     public function echoMessage($level, $message, array $context)
     {
@@ -90,7 +95,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $this->expectOutputString($expectedResult);
     }
 
-    public function InvokableObjectHandler()
+    public function testInvokableObjectHandler()
     {
         $expectedResult = 'log message';
 
@@ -99,6 +104,118 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         ]);
 
         $logger->info($expectedResult);
+
+        $this->expectOutputString($expectedResult);
+    }
+    
+    public function testLogLevelDebug()
+    {
+        $message = 'log message';
+        $expectedResult = LogLevel::DEBUG. '::' . $message;
+
+        $logger = new Logger\Logger([
+            ['\DummyHandler', 'staticEchoLevelMessage']
+        ]);
+
+        $logger->debug($message);
+
+        $this->expectOutputString($expectedResult);
+    }
+    
+    public function testLogLevelInfo()
+    {
+        $message = 'log message';
+        $expectedResult = LogLevel::INFO. '::' . $message;
+
+        $logger = new Logger\Logger([
+            ['\DummyHandler', 'staticEchoLevelMessage']
+        ]);
+
+        $logger->info($message);
+
+        $this->expectOutputString($expectedResult);
+    }
+    
+    public function testLogLevelNotice()
+    {
+        $message = 'log message';
+        $expectedResult = LogLevel::NOTICE. '::' . $message;
+
+        $logger = new Logger\Logger([
+            ['\DummyHandler', 'staticEchoLevelMessage']
+        ]);
+
+        $logger->notice($message);
+
+        $this->expectOutputString($expectedResult);
+    }
+    
+    public function testLogLevelAlert()
+    {
+        $message = 'log message';
+        $expectedResult = LogLevel::ALERT. '::' . $message;
+
+        $logger = new Logger\Logger([
+            ['\DummyHandler', 'staticEchoLevelMessage']
+        ]);
+
+        $logger->alert($message);
+
+        $this->expectOutputString($expectedResult);
+    }
+    
+    public function testLogLevelWarning()
+    {
+        $message = 'log message';
+        $expectedResult = LogLevel::WARNING. '::' . $message;
+
+        $logger = new Logger\Logger([
+            ['\DummyHandler', 'staticEchoLevelMessage']
+        ]);
+
+        $logger->warning($message);
+
+        $this->expectOutputString($expectedResult);
+    }
+    
+    public function testLogLevelError()
+    {
+        $message = 'log message';
+        $expectedResult = LogLevel::ERROR. '::' . $message;
+
+        $logger = new Logger\Logger([
+            ['\DummyHandler', 'staticEchoLevelMessage']
+        ]);
+
+        $logger->error($message);
+
+        $this->expectOutputString($expectedResult);
+    }
+    
+    public function testLogLevelCritical()
+    {
+        $message = 'log message';
+        $expectedResult = LogLevel::CRITICAL. '::' . $message;
+
+        $logger = new Logger\Logger([
+            ['\DummyHandler', 'staticEchoLevelMessage']
+        ]);
+
+        $logger->critical($message);
+
+        $this->expectOutputString($expectedResult);
+    }
+    
+    public function testLogLevelEmergency()
+    {
+        $message = 'log message';
+        $expectedResult = LogLevel::EMERGENCY. '::' . $message;
+
+        $logger = new Logger\Logger([
+            ['\DummyHandler', 'staticEchoLevelMessage']
+        ]);
+
+        $logger->emergency($message);
 
         $this->expectOutputString($expectedResult);
     }
