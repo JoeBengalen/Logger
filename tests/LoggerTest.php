@@ -108,6 +108,15 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $this->expectOutputString($expectedResult);
     }
     
+    public function testNonCallableHandlerException()
+    {
+        $this->setExpectedException('\Psr\Log\InvalidArgumentException');
+        
+        $logger = new Logger\Logger([
+            'nonExistingHandler'
+        ]);
+    }
+    
     public function testLogLevelDebug()
     {
         $message = 'log message';
@@ -218,5 +227,18 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $logger->emergency($message);
 
         $this->expectOutputString($expectedResult);
+    }
+    
+    public function testInvalidLogLevelException()
+    {
+        $message = 'log message';
+        
+        $logger = new Logger\Logger([
+            ['\DummyHandler', 'staticEchoLevelMessage']
+        ]);
+        
+        $this->setExpectedException('\Psr\Log\InvalidArgumentException');
+
+        $logger->log('invalid', $message);
     }
 }
