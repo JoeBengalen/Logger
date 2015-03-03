@@ -27,15 +27,15 @@ class Logger implements LoggerInterface
     /**
      * Create a logger instance and register handlers
      * 
-     * @param JoeBengalen\Logger\Handler\HandlerInterface[] $handlers List of handlers
+     * @param callable[] $handlers List of handlers
      * 
-     * @throws InvalidArgumentException If any handler does not implement the JoeBengalen\Logger\Handler\HandlerInterface
+     * @throws InvalidArgumentException If any handler is not callable
      */
     public function __construct(array $handlers)
     {
         foreach ($handlers as $handler) {
-            if (!$handler instanceof Handler\HandlerInterface) {
-                throw new InvalidArgumentException("Handler must implement the JoeBengalen\Logger\Handler\HandlerInterface");
+            if (!is_callable($handler)) {
+                throw new InvalidArgumentException("Handler must be callable");
             }
         }
         $this->handlers = $handlers;
@@ -59,7 +59,7 @@ class Logger implements LoggerInterface
 
         // call each handler
         foreach ($this->handlers as $handler) {
-            $handler->log($level, $message, $context);
+            call_user_func_array($handler, [$level, $message, $context]);
         }
     }
 }
