@@ -12,11 +12,14 @@ date_default_timezone_set('Europe/Amsterdam');
 require_once 'vendor/autoload.php';
 
 $logFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'default.log';
+$sqliteFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'logging.sqlite';
 
 $logger = new Logger\Logger([
     //new Logger\Handler\ErrorLogHandler(),
     new Logger\Handler\FileHandler($logFile),
     new Logger\Handler\DisplayHandler(),
+    
+    //new Logger\Handler\PdoHandler(new PDO("sqlite:{$sqliteFile}", null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION])),
     
     // custom handler only showing debug messages
     function ($level, $message, array $context) {
