@@ -1,4 +1,6 @@
-# Logger
+# Logger 
+[![Build Status](https://secure.travis-ci.org/JoeBengalen/Logger.png)](http://travis-ci.org/JoeBengalen/Logger)
+
 Simple logger library based on the [php-fig PSR3 Logger Interface](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
 
 ## Getting started
