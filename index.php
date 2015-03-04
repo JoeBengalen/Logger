@@ -9,10 +9,10 @@ ini_set('display_errors', 1);
 // Set default timezone
 date_default_timezone_set('Europe/Amsterdam');
 
-require_once 'vendor/autoload.php';
+require_once 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-$logFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'default.log';
-$sqliteFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'logging.sqlite';
+$logFile = __DIR__ . DIRECTORY_SEPARATOR . 'default.log';
+$sqliteFile = __DIR__ . DIRECTORY_SEPARATOR . 'logging.sqlite';
 
 $logger = new Logger\Logger([
     //new Logger\Handler\ErrorLogHandler(),
