@@ -32,15 +32,15 @@ namespace JoeBengalen\Logger\Handler;
 /**
  * Database log handler
  * 
- * Database log handler thats uses a \PDO instance. All log levels will be logged.
+ * Database log handler that uses a \PDO instance. All log levels will be logged.
  */
 class PdoHandler extends AbstractHandler
 {
     /**
-     * @var \PDO Connection instance
+     * @var \PDO $connection Connection instance
      */
-    protected $pdo;
-    
+    protected $connection;
+
     /**
      * @var array $options {
      *      @var string $table              Table name
@@ -53,11 +53,11 @@ class PdoHandler extends AbstractHandler
     protected $options;
 
     /**
-     * Create PDO log handler
+     * Create database log handler
      * 
      * This handler logs the message to a database
      * 
-     * @param \PDO  $pdo        \PDO instance
+     * @param \PDO  $connection Connection instance
      * @param array $options (optional) {
      *      @var string $table              Table name
      *      @var string $column.datetime    Datetime column name
@@ -66,9 +66,9 @@ class PdoHandler extends AbstractHandler
      *      @var string $column.context     Context column name
      * }
      */
-    public function __construct(\PDO $pdo, array $options = [])
+    public function __construct(\PDO $connection, array $options = [])
     {
-        $this->pdo = $pdo;
+        $this->connection = $connection;
 
         $this->options = array_merge([
             'table'           => 'logs',
@@ -76,7 +76,7 @@ class PdoHandler extends AbstractHandler
             'column.level'    => 'level',
             'column.message'  => 'message',
             'column.context'  => 'context'
-        ], $options);
+                ], $options);
     }
 
     /**
@@ -88,15 +88,16 @@ class PdoHandler extends AbstractHandler
      */
     public function __invoke($level, $message, array $context = [])
     {
-        $sql = "INSERT INTO {$this->options['table']} ({$this->options['column.datetime']}, {$this->options['column.level']}, {$this->options['column.message']}, {$this->options['column.context']}) VALUES (NOW(), ?, ?, ?)";
-        $sth = $this->pdo->prepare($sql);
-
         $interpolatedMessage = $this->interpolate($message, $context);
 
+        // Check for a \Exception in the context
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
             $interpolatedMessage .= " " . (string) $context['exception'];
             unset($context['exception']);
         }
+
+        $sql = "INSERT INTO {$this->options['table']} ({$this->options['column.datetime']}, {$this->options['column.level']}, {$this->options['column.message']}, {$this->options['column.context']}) VALUES (NOW(), ?, ?, ?)";
+        $sth = $this->connection->prepare($sql);
 
         $sth->execute([
             $level,
