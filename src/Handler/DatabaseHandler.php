@@ -30,39 +30,53 @@
 namespace JoeBengalen\Logger\Handler;
 
 /**
- * File logging handler
+ * Database log handler
  * 
- * Logs all log level messages to a specified file.
+ * Database log handler that uses a \PDO instance. All log levels will be logged.
  */
-class FileHandler extends AbstractHandler
+class DatabaseHandler extends AbstractHandler
 {
     /**
-     * @var string $file Absolute path of the log file 
+     * @var \PDO $connection Connection instance
      */
-    protected $file;
-    
+    protected $connection;
+
     /**
      * @var array $options {
-     *      @var string $datetime.format The datetime format to log in
+     *      @var string $table              Table name
+     *      @var string $column.datetime    Datetime column name
+     *      @var string $column.level       Level column name
+     *      @var string $column.message     Message column name
+     *      @var string $column.context     Context column name
      * }
      */
     protected $options;
 
     /**
-     * Create a file log handler
+     * Create database log handler
      * 
-     * @param string    $logFile Absolute path of the log file
-     * @param array     $options (optional) {
-     *      @var string $datetime.format The datetime format to log in
+     * This handler logs the message to a database
+     * 
+     * @param \PDO  $connection Connection instance
+     * @param array $options (optional) {
+     *      @var string $table              Table name
+     *      @var string $column.datetime    Datetime column name
+     *      @var string $column.level       Level column name
+     *      @var string $column.message     Message column name
+     *      @var string $column.context     Context column name
      * }
      */
-    public function __construct($logFile, array $options = [])
+    public function __construct(\PDO $connection, array $options = [])
     {
-        $this->file = $logFile;
-        
+        $this->connection = $connection;
+
         $this->options = array_merge([
-            'datetime.format' => 'Y-m-d h:m:s',
-        ], $options);
+            'table'           => 'logs',
+            'column.datetime' => 'datetime',
+            'column.level'    => 'level',
+            'column.message'  => 'message',
+            'column.context'  => 'context'
+                ], $options);
     }
 
     /**
@@ -74,30 +88,21 @@ class FileHandler extends AbstractHandler
      */
     public function __invoke($level, $message, array $context = [])
     {
-        file_put_contents($this->file, $this->format($level, $message, $context), FILE_APPEND);
-    }
-
-    /**
-     * Format the message
-     * 
-     * Adds the datetime, replaces the placeholders in the message and append the 
-     * exception (if given) as string to the message.
-     * 
-     * @param string    $level      Log level defined in \Psr\Log\LogLevel
-     * @param string    $message    Message to log
-     * @param mixed[]   $context    Extra information
-     * 
-     * @return string Formatted message
-     */
-    protected function format($level, $message, array $context = [])
-    {
         $interpolatedMessage = $this->interpolate($message, $context);
-        $now = new \DateTime('NOW');
-        $result = $now->format($this->options['datetime.format']) . ' ' . strtoupper($level) . ": {$interpolatedMessage}";
-        
+
+        // Check for a \Exception in the context
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
-            $result .= ": " . (string) $context['exception'];
+            $interpolatedMessage .= " " . (string) $context['exception'];
+            unset($context['exception']);
         }
-        return $result . PHP_EOL;
+
+        $sql = "INSERT INTO {$this->options['table']} ({$this->options['column.datetime']}, {$this->options['column.level']}, {$this->options['column.message']}, {$this->options['column.context']}) VALUES (NOW(), ?, ?, ?)";
+        $sth = $this->connection->prepare($sql);
+
+        $sth->execute([
+            $level,
+            $interpolatedMessage,
+            json_encode($context)
+        ]);
     }
 }
