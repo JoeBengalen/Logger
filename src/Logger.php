@@ -9,6 +9,8 @@ use Psr\Log\InvalidArgumentException;
 
 class Logger implements LoggerInterface
 {
+    const VERSION = '0.1.0';
+    
     use LoggerTrait;
     
     protected $handlers = [];
@@ -20,8 +22,8 @@ class Logger implements LoggerInterface
         LogLevel::ALERT,
         LogLevel::WARNING,
         LogLevel::ERROR,
-        LogLevel::EMERGENCY,
-        LogLevel::CRITICAL
+        LogLevel::CRITICAL,
+        LogLevel::EMERGENCY
     ];
 
     /**

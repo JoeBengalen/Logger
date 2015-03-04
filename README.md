@@ -1,7 +1,7 @@
-# Logger 
+# Logger
 [![Build Status](https://secure.travis-ci.org/JoeBengalen/Logger.png)](http://travis-ci.org/JoeBengalen/Logger)
 
-Simple logger library based on the [php-fig PSR3 Logger Interface](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
+Lightweight [psr-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md) logger library.
 
 ## Getting started
 
@@ -38,9 +38,9 @@ $logger->emergency('emergency message');
 
 #### Context
 
-Along with a log message also a second argument may be passed. This *context* is an array which may contain anything.
+Along with a log message also a second argument can be passed. This *context* is an array which could contain anything.
 
-The ```$context``` may be used to replace placeholders in the log message.
+The ```$context``` can be used to replace placeholders in the log message.
 ```php
 $logger->info('User {username} created.', ['username' => 'John Doe']);
 // -> User John Doe created.
