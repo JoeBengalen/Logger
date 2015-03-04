@@ -60,15 +60,6 @@ Handers are callables registered to the logger. It is up to the user which handl
 #### Shipped handlers
 All shipped handlers process *every* log message. There if no filter based on the log level.
 
-##### ErrorLogHandler
-The ```ErrorLogHandler``` makes use of PHPs default ```error_log``` function. This way it acts the same as the default error reporting would do.
-
-```php
-$logger = new Logger([
-    new Handler\ErrorLogHandler()
-]);
-```
-
 ##### FileHandler
 The ```FileHandler``` is given a file in its initialization and logs all messages into that file.
 
@@ -78,12 +69,12 @@ $logger = new Logger([
 ]);
 ```
 
-##### DisplayHandler
-Do you want to view the log message on the screeen, then use can use the ```DisplayHandler``` which puts the logs message to the screen.
+##### DatabaseHandler
+The ```DatabaseHandler``` is given ```\PDO``` instance in its initialization and logs all messages into a table.
 
 ```php
 $logger = new Logger([
-    new Handler\DisplayHandler()
+    new Handler\DatabaseHander(new \PDO(...));
 ]);
 ```
 

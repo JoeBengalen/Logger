@@ -15,11 +15,8 @@ $logFile = __DIR__ . DIRECTORY_SEPARATOR . 'default.log';
 $sqliteFile = __DIR__ . DIRECTORY_SEPARATOR . 'logging.sqlite';
 
 $logger = new Logger\Logger([
-    //new Logger\Handler\ErrorLogHandler(),
-    new Logger\Handler\FileHandler($logFile),
-    new Logger\Handler\DisplayHandler(),
-    
-    //new Logger\Handler\PdoHandler(new PDO("sqlite:{$sqliteFile}", null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION])),
+    new Logger\Handler\FileHandler($logFile),    
+    //new Logger\Handler\DatabaseHandler(new PDO("sqlite:{$sqliteFile}", null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION])),
     
     // custom handler only showing debug messages
     function ($level, $message, array $context) {
