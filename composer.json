@@ -1,16 +1,23 @@
 {
     "name": "joebengalen/logger",
-    "description": "Simple logger library based on the PSR-3-logger-interface.",
-    "require": {
-        "psr/log": "~1.0"
-    },
-    
+    "type": "library",
+    "description": "Lightweight logger library based on the php-fig psr3 logger interface standard.",
+    "keywords": ["logger", "log", "logging", "psr3"],
+    "homepage": "https://github.com/JoeBengalen/Logger",
+    "license": "MIT",    
     "authors": [
         {
-            "name": "JoeBengalen",
+            "name": "Martijn Wennink",
             "email": "JoeBengalen@users.noreply.github.com"
         }
     ],
+    "support": {
+        "issues": "https://github.com/JoeBengalen/Logger/issues",
+        "source": "https://github.com/JoeBengalen/Logger"
+    },
+    "require": {
+        "psr/log": "~1.0"
+    },
     "autoload": {
         "psr-4": {
             "JoeBengalen\\Logger\\": "src/"

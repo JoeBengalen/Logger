@@ -27,11 +27,11 @@ class Logger implements LoggerInterface
     /**
      * Create a logger instance and register handlers
      * 
-     * @param callable[] $handlers List of handlers
+     * @param callable[] $handlers (optional) List of callable handlers
      * 
      * @throws InvalidArgumentException If any handler is not callable
      */
-    public function __construct(array $handlers)
+    public function __construct(array $handlers = [])
     {
         foreach ($handlers as $handler) {
             if (!is_callable($handler)) {
