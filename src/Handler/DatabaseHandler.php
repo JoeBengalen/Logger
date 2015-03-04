@@ -34,7 +34,7 @@ namespace JoeBengalen\Logger\Handler;
  * 
  * Database log handler that uses a \PDO instance. All log levels will be logged.
  */
-class PdoHandler extends AbstractHandler
+class DatabaseHandler extends AbstractHandler
 {
     /**
      * @var \PDO $connection Connection instance
