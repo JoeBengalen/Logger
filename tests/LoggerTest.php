@@ -241,4 +241,45 @@ class LoggerTest extends PHPUnit_Framework_TestCase
 
         $logger->log('invalid', $message);
     }
+
+    public function testLogCustomLogMessageFactory()
+    {
+        $phrase = 'custom_log_message_factory_called';
+        
+        $logger = new Logger\Logger([], [
+            'log.message.factory' => function () use ($phrase) {
+                echo $phrase;
+                return $this->getMock('\JoeBengalen\Logger\LogMessageInterface');
+            }
+        ]);
+        
+        // make sure the factory is called
+        $logger->debug('debug message');
+        
+        // check if the original logMessage aquals the one set by the handler
+        $this->expectOutputString($phrase);
+        
+    }
+
+    public function testLogCustomLogMessageFactoryNonCallable()
+    {
+        $this->setExpectedException('\InvalidArgumentException');
+        
+        new Logger\Logger([], [
+            'log.message.factory' => null
+        ]);
+    }
+
+    public function testLogCustomLogMessageFactoryNoLogMessageReturned()
+    {
+        $this->setExpectedException('\RuntimeException');
+        
+        $logger = new Logger\Logger([], [
+            'log.message.factory' => function () {
+                return null;
+            }
+        ]);
+        
+        $logger->debug('debug message');
+    }
 }
