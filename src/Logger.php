@@ -53,6 +53,7 @@ class Logger implements LoggerInterface
      * }
      * 
      * @throws \InvalidArgumentException If any handler is not callable
+     * @throws \InvalidArgumentException If option log.message.factory is not a callable
      */
     public function __construct(array $handlers = [], array $options = [])
     {
@@ -72,6 +73,11 @@ class Logger implements LoggerInterface
                 return new LogMessage($level, $message, $context);
             }
         ], $options);
+        
+        // check if option log.message.factory is a callable
+        if (!is_callable($this->options['log.message.factory'])) {
+            throw new \InvalidArgumentException("Option 'log.message.factory' must contain a callable");
+        }
     }
 
     /**
