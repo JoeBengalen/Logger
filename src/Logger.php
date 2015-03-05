@@ -31,6 +31,15 @@ class Logger implements LoggerInterface
     use LoggerTrait;
     
     /**
+     * @var array $options {
+     *      @var callable $log.message.factory Alternative LogMessageInterface factory. 
+     *          Callable arguments: mixed $level, string $message, array $context
+     *          It MUST return an instance of LogMessageInterface.
+     * }
+     */
+    protected $options;
+    
+    /**
      * @var callable[] Log handlers 
      */
     protected $handlers = [];
@@ -52,11 +61,16 @@ class Logger implements LoggerInterface
     /**
      * Create a logger instance and register handlers
      * 
-     * @param callable[] $handlers (optional) List of callable handlers
+     * @param callable[]    $handlers (optional)    List of callable handlers
+     * @param array         $options (optional)     {
+     *      @var callable $log.message.factory Alternative LogMessageInterface factory. 
+     *          Callable arguments: mixed $level, string $message, array $context
+     *          It MUST return an instance of LogMessageInterface.
+     * }
      * 
      * @throws \InvalidArgumentException If any handler is not callable
      */
-    public function __construct(array $handlers = [])
+    public function __construct(array $handlers = [], array $options = [])
     {
         // check if each handler is callable
         foreach ($handlers as $handler) {
@@ -66,6 +80,14 @@ class Logger implements LoggerInterface
         }
         
         $this->handlers = $handlers;
+        
+        // merge default options with the given options
+        $this->options = array_merge([
+            // LogMessageInterface factory callable
+            'log.message.factory' => function($level, $message, $context) {
+                return new LogMessage($level, $message, $context);
+            }
+        ], $options);
     }
 
     /**
@@ -75,7 +97,8 @@ class Logger implements LoggerInterface
      * @param string    $message    Message to log
      * @param array     $context    Context values sent along with the message
      * 
-     * @throws \Psr\Log\InvalidArgumentException If the $level is not defined in \Psr\Log\LogLevel
+     * @throws \Psr\Log\InvalidArgumentException    If the $level is not defined in \Psr\Log\LogLevel
+     * @throws \RuntimeException                    If callable option 'log.message.factory' does not return an instance of \JoeBengalen\Logger\LogMessageInterface
      */
     public function log($level, $message, array $context = [])
     {
@@ -84,8 +107,14 @@ class Logger implements LoggerInterface
             throw new InvalidArgumentException("Log level '{$level}' is not reconized.");
         }
         
-        $logMessage = new LogMessage($level, $message, $context);
-
+        // create a LogMessageInterface with the registered log.message.factory callable
+        $logMessage = call_user_func_array($this->options['log.message.factory'], [$level, $message, $context]);
+        
+        // check if the factory returned an instance of \JoeBengalen\Logger\LogMessageInterface
+        if (!$logMessage instanceof LogMessageInterface) {
+            throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\Logger\LogMessageInterface");
+        }
+        
         // call each handler
         foreach ($this->handlers as $handler) {
             call_user_func($handler, $logMessage);
