@@ -106,3 +106,22 @@ $logger = new Logger([
 ```
 
 **Note** that it is up to the handler to handle the _context_ array properly. (For example, replacing placeholders in the message and recognizing an ```\Exception```)
+
+#### Custom LogMessageInterface factory
+The factory to create a LogMessageInterface instance is another callable, registered as $option ```log.message.factory```. This factory is given three arguments. The ```$level```, ```$message``` and ```$context``` and should return an instance that implements the LogMessageInterface. Apart from that the factory is completely free to return any object (as long as it implements the right interface) it wants and format the given arguments as it pleases.
+
+By default an instance of ```LogMessage``` is returned.
+
+```php
+use JoeBengalen\Logger\Logger;
+use JoeBengalen\Logger\LogMessage;
+
+$logger = new Logger([
+    // handlers
+], [
+    // LogMessageInterface factory
+    'log.message.factory' => function($level, $message, $context) {
+        return new LogMessage($level, $message, $context);
+    }
+]);
+```
