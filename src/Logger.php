@@ -54,14 +54,14 @@ class Logger implements LoggerInterface
      * 
      * @param callable[] $handlers (optional) List of callable handlers
      * 
-     * @throws \Psr\Log\InvalidArgumentException If any handler is not callable
+     * @throws \InvalidArgumentException If any handler is not callable
      */
     public function __construct(array $handlers = [])
     {
         // check if each handler is callable
         foreach ($handlers as $handler) {
             if (!is_callable($handler)) {
-                throw new InvalidArgumentException("Handler must be callable");
+                throw new \InvalidArgumentException("Handler must be callable");
             }
         }
         
