@@ -26,21 +26,21 @@ interface LogMessageInterface
      * @throws \Psr\Log\InvalidArgumentException If $level is not defined in \Psr\Log\LogLevel
      */
     public function __construct($level, $message, array $context = []);
-    
+
     /**
      * Get level
      * 
      * @return string Level, defined in \Psr\Log\LogLevel
      */
     public function getLevel();
-    
+
     /**
      * Get message
      * 
      * @return string Message
      */
     public function getMessage();
-    
+
     /**
      * Get context
      * 

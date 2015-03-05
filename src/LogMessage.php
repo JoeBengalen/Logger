@@ -23,17 +23,16 @@ class LogMessage implements LogMessageInterface
      * @var mixed $level Level, defined in \Psr\Log\LogLevel
      */
     protected $level;
-    
+
     /**
      * @var string $message Message
      */
     protected $message;
-    
+
     /**
      * @var mixed[] $context Context
      */
     protected $context;
-
 
     /**
      * Create a new log message

@@ -58,9 +58,9 @@ class DatabaseHandler extends AbstractHandler
             'column.level'    => 'level',
             'column.message'  => 'message',
             'column.context'  => 'context'
-                ], $options);
+        ], $options);
     }
-         
+
     /**
      * Log a message
      * 
@@ -69,7 +69,7 @@ class DatabaseHandler extends AbstractHandler
     public function __invoke(LogMessageInterface $logMessage)
     {
         $interpolatedMessage = $this->interpolate($logMessage->getMessage(), $logMessage->getContext());
-
+        
         $context = $logMessage->getContext();
         
         // Check for a \Exception in the context
@@ -77,10 +77,10 @@ class DatabaseHandler extends AbstractHandler
             $interpolatedMessage .= " " . (string) $context['exception'];
             unset($context['exception']);
         }
-
+        
         $sql = "INSERT INTO {$this->options['table']} ({$this->options['column.datetime']}, {$this->options['column.level']}, {$this->options['column.message']}, {$this->options['column.context']}) VALUES (NOW(), ?, ?, ?)";
         $sth = $this->connection->prepare($sql);
-
+        
         $sth->execute([
             $logMessage->getLevel(),
             $interpolatedMessage,

@@ -25,9 +25,9 @@ class Logger implements LoggerInterface
      * @const string The package version number
      */
     const VERSION = '0.1.0';
-    
+
     use LoggerTrait;
-    
+
     /**
      * @var array $options {
      *      @var callable $log.message.factory Alternative LogMessageInterface factory. 
@@ -36,7 +36,7 @@ class Logger implements LoggerInterface
      * }
      */
     protected $options;
-    
+
     /**
      * @var callable[] Log handlers 
      */

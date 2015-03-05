@@ -22,7 +22,7 @@ class FileHandler extends AbstractHandler
      * @var string $file Absolute path of the log file 
      */
     protected $file;
-    
+
     /**
      * @var array $options {
      *      @var string $datetime.format The datetime format to log in
