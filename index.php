@@ -1,6 +1,7 @@
 <?php
 
 use JoeBengalen\Logger;
+use JoeBengalen\Logger\LogMessageInterface;
 use Psr\Log\LogLevel;
 
 error_reporting(-1);
@@ -19,9 +20,9 @@ $logger = new Logger\Logger([
     //new Logger\Handler\DatabaseHandler(new PDO("sqlite:{$sqliteFile}", null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION])),
     
     // custom handler only showing debug messages
-    function ($level, $message, array $context) {
-        if ($level == LogLevel::DEBUG) {
-            echo "Debugging: {$message}\n";
+    function (LogMessageInterface $logMessage) {
+        if ($logMessage->getLevel() == LogLevel::DEBUG) {
+            echo "Debugging: {$logMessage->getMessage()}\n";
         }
     }
 ]);

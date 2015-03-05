@@ -1,10 +1,12 @@
 <?php
 
+use JoeBengalen\Logger\LogMessageInterface;
+
 class InvokableHandler extends JoeBengalen\Logger\Handler\AbstractHandler
 {
-    public function __invoke($level, $message, array $context = [])
+    public function __invoke(LogMessageInterface $logMessage)
     {
-        return [$level, $this->interpolate($message, $context), $context];
+        return $this->interpolate($logMessage->getMessage(), $logMessage->getContext());
     }
 }
 

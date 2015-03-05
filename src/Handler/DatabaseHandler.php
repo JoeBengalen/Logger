@@ -9,6 +9,8 @@
  */
 namespace JoeBengalen\Logger\Handler;
 
+use \JoeBengalen\Logger\LogMessageInterface;
+
 /**
  * Database log handler
  * 
@@ -56,31 +58,31 @@ class DatabaseHandler extends AbstractHandler
             'column.level'    => 'level',
             'column.message'  => 'message',
             'column.context'  => 'context'
-                ], $options);
+        ], $options);
     }
 
     /**
      * Log a message
      * 
-     * @param mixed     $level      Log level defined in \Psr\Log\LogLevel
-     * @param string    $message    Message to log
-     * @param mixed[]   $context    Extra information
+     * @param LogMessageInterface $logMessage LogMessageInterface instance
      */
-    public function __invoke($level, $message, array $context = [])
+    public function __invoke(LogMessageInterface $logMessage)
     {
-        $interpolatedMessage = $this->interpolate($message, $context);
-
+        $interpolatedMessage = $this->interpolate($logMessage->getMessage(), $logMessage->getContext());
+        
+        $context = $logMessage->getContext();
+        
         // Check for a \Exception in the context
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
             $interpolatedMessage .= " " . (string) $context['exception'];
             unset($context['exception']);
         }
-
+        
         $sql = "INSERT INTO {$this->options['table']} ({$this->options['column.datetime']}, {$this->options['column.level']}, {$this->options['column.message']}, {$this->options['column.context']}) VALUES (NOW(), ?, ?, ?)";
         $sth = $this->connection->prepare($sql);
-
+        
         $sth->execute([
-            $level,
+            $logMessage->getLevel(),
             $interpolatedMessage,
             json_encode($context)
         ]);

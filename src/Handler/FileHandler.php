@@ -9,6 +9,8 @@
  */
 namespace JoeBengalen\Logger\Handler;
 
+use \JoeBengalen\Logger\LogMessageInterface;
+
 /**
  * File logging handler
  * 
@@ -20,7 +22,7 @@ class FileHandler extends AbstractHandler
      * @var string $file Absolute path of the log file 
      */
     protected $file;
-    
+
     /**
      * @var array $options {
      *      @var string $datetime.format The datetime format to log in
@@ -48,13 +50,11 @@ class FileHandler extends AbstractHandler
     /**
      * Log a message
      * 
-     * @param mixed     $level      Log level defined in \Psr\Log\LogLevel
-     * @param string    $message    Message to log
-     * @param mixed[]   $context    Extra information
+     * @param LogMessageInterface $logMessage LogMessageInterface instance
      */
-    public function __invoke($level, $message, array $context = [])
+    public function __invoke(LogMessageInterface $logMessage)
     {
-        file_put_contents($this->file, $this->format($level, $message, $context), FILE_APPEND);
+        file_put_contents($this->file, $this->format($logMessage->getLevel(), $logMessage->getMessage(), $logMessage->getContext()), FILE_APPEND);
     }
 
     /**

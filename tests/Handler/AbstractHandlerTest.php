@@ -1,23 +1,18 @@
 <?php
 
+use JoeBengalen\Logger\LogMessage;
+use Psr\Log\LogLevel;
+
 class AbstractHanderTest extends PHPUnit_Framework_TestCase
 {
     public function testInterpolate()
-    {
-        $data = [
-            'info', // level
-            'log {replace}', // message
-            ['replace' => 'message'] // context
-        ];
+    {        
+        $logMessage = new LogMessage(LogLevel::INFO, 'log {replace}', ['replace' => 'message']);
         
-        $expected = [
-            'info', // level
-            'log message', // message
-            ['replace' => 'message'] // context
-        ];
+        $expected = 'log message';
         
-        $result = call_user_func_array(new InvokableHandler(), $data);
+        $result = call_user_func(new InvokableHandler(), $logMessage);
         
-        $this->assertEquals($result, $expected);
+        $this->assertEquals($expected, $result);
     }
 }

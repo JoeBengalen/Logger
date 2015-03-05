@@ -1,36 +1,36 @@
 <?php
 
 use JoeBengalen\Logger;
+use JoeBengalen\Logger\LogMessageInterface;
 use Psr\Log\LogLevel;
 
-function namedFunction($level, $message, array $context)
-{
-    echo $message;
+function namedFunction(LogMessageInterface $logMessage) {
+    echo $logMessage->getMessage();
 }
 
 class DummyHandler
 {
-    public static function staticEchoMessage($level, $message, array $context)
+    public static function staticEchoMessage(LogMessageInterface $logMessage)
     {
-        echo $message;
+        echo $logMessage->getMessage();
     }
     
-    public static function staticEchoLevelMessage($level, $message, array $context)
+    public static function staticEchoLevelMessage(LogMessageInterface $logMessage)
     {
-        echo "$level::$message";
+        echo "{$logMessage->getLevel()}::{$logMessage->getMessage()}";
     }
 
-    public function echoMessage($level, $message, array $context)
+    public function echoMessage(LogMessageInterface $logMessage)
     {
-        echo $message;
+        echo $logMessage->getMessage();
     }
 }
 
 class InvokableObject
 {
-    public function __invoke($level, $message, array $context)
+    public function __invoke(LogMessageInterface $logMessage)
     {
-        echo $message;
+        echo $logMessage->getMessage();
     }
 }
 
@@ -48,8 +48,8 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = 'log message';
 
         $logger = new Logger\Logger([
-            function ($level, $message, array $context) {
-                echo $message;
+            function (LogMessageInterface $logMessage) {
+                echo $logMessage->getMessage();
             }
         ]);
 
