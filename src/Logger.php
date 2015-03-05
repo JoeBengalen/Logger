@@ -11,8 +11,6 @@ namespace JoeBengalen\Logger;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
-use Psr\Log\LogLevel;
-use Psr\Log\InvalidArgumentException;
 
 /**
  * Logger
@@ -43,20 +41,6 @@ class Logger implements LoggerInterface
      * @var callable[] Log handlers 
      */
     protected $handlers = [];
-    
-    /**
-     * @var array Available log levels
-     */
-    protected $logLevels = [
-        LogLevel::DEBUG,
-        LogLevel::INFO,
-        LogLevel::NOTICE,
-        LogLevel::ALERT,
-        LogLevel::WARNING,
-        LogLevel::ERROR,
-        LogLevel::CRITICAL,
-        LogLevel::EMERGENCY
-    ];
 
     /**
      * Create a logger instance and register handlers
@@ -102,12 +86,7 @@ class Logger implements LoggerInterface
      */
     public function log($level, $message, array $context = [])
     {
-        // check if the log level is valid
-        if (!in_array($level, $this->logLevels)) {
-            throw new InvalidArgumentException("Log level '{$level}' is not reconized.");
-        }
-        
-        // create a LogMessageInterface with the registered log.message.factory callable
+        // create a LogMessageInterface instance with the registered log.message.factory callable
         $logMessage = call_user_func_array($this->options['log.message.factory'], [$level, $message, $context]);
         
         // check if the factory returned an instance of \JoeBengalen\Logger\LogMessageInterface
