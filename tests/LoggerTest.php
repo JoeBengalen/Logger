@@ -110,7 +110,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
     
     public function testNonCallableHandlerException()
     {
-        $this->setExpectedException('\Psr\Log\InvalidArgumentException');
+        $this->setExpectedException('\InvalidArgumentException');
         
         $logger = new Logger\Logger([
             'nonExistingHandler'
