@@ -26,14 +26,14 @@ $logger = new Logger([
 ]);
 
 // basic usage
-$logger->debug('debug message');
-$logger->info('info message');
-$logger->notice('notice message');
-$logger->alert('alert message');
-$logger->warning('warning message');
-$logger->error('error message');
-$logger->critical('critical message');
-$logger->emergency('emergency message');
+$logger->emergency('emergency message');    // System is unusable
+$logger->alert('alert message');            // Action must be taken immediately (Example: Entire website down, database unavailable, etc. This should trigger the SMS alerts and wake you up.)
+$logger->critical('critical message');      // Critical conditions (Example: Application component unavailable, unexpected exception.)
+$logger->error('error message');            // Runtime errors that do not require immediate action but should typically be logged and monitored.
+$logger->warning('warning message');        // Exceptional occurrences that are not errors (Example: Use of deprecated APIs, poor use of an API, undesirable things that are not necessarily wrong.)
+$logger->notice('notice message');          // Normal but significant events.
+$logger->info('info message');              // Interesting events (Example: User logs in, SQL logs.)
+$logger->debug('debug message');            // Detailed debug information.
 ```
 
 #### Context
