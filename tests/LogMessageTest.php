@@ -11,9 +11,9 @@ class LogMessageTest extends PHPUnit_Framework_TestCase
         $message    = 'Emergency level message.';
         $logMessage = new LogMessage($level, $message);
 
-        $this->assertEquals($logMessage->getLevel(), $level);
-        $this->assertEquals($logMessage->getMessage(), $message);
-        $this->assertEquals($logMessage->getContext(), []);
+        $this->assertEquals($level, $logMessage->getLevel());
+        $this->assertEquals($message, $logMessage->getMessage());
+        $this->assertEquals([], $logMessage->getContext());
     }
     
     public function testAlertLevel()
@@ -22,9 +22,9 @@ class LogMessageTest extends PHPUnit_Framework_TestCase
         $message    = 'Alert level message.';
         $logMessage = new LogMessage($level, $message);
 
-        $this->assertEquals($logMessage->getLevel(), $level);
-        $this->assertEquals($logMessage->getMessage(), $message);
-        $this->assertEquals($logMessage->getContext(), []);
+        $this->assertEquals($level, $logMessage->getLevel());
+        $this->assertEquals($message, $logMessage->getMessage());
+        $this->assertEquals([], $logMessage->getContext());
     }
     
     public function testCriticalLevel()
@@ -33,9 +33,9 @@ class LogMessageTest extends PHPUnit_Framework_TestCase
         $message    = 'Critical level message.';
         $logMessage = new LogMessage($level, $message);
 
-        $this->assertEquals($logMessage->getLevel(), $level);
-        $this->assertEquals($logMessage->getMessage(), $message);
-        $this->assertEquals($logMessage->getContext(), []);
+        $this->assertEquals($level, $logMessage->getLevel());
+        $this->assertEquals($message, $logMessage->getMessage());
+        $this->assertEquals([], $logMessage->getContext());
     }
     
     public function testErrorLevel()
@@ -44,9 +44,9 @@ class LogMessageTest extends PHPUnit_Framework_TestCase
         $message    = 'Error level message.';
         $logMessage = new LogMessage($level, $message);
 
-        $this->assertEquals($logMessage->getLevel(), $level);
-        $this->assertEquals($logMessage->getMessage(), $message);
-        $this->assertEquals($logMessage->getContext(), []);
+        $this->assertEquals($level, $logMessage->getLevel());
+        $this->assertEquals($message, $logMessage->getMessage());
+        $this->assertEquals([], $logMessage->getContext());
     }
     
     public function testWarningLevel()
@@ -55,9 +55,9 @@ class LogMessageTest extends PHPUnit_Framework_TestCase
         $message    = 'Warning level message.';
         $logMessage = new LogMessage($level, $message);
 
-        $this->assertEquals($logMessage->getLevel(), $level);
-        $this->assertEquals($logMessage->getMessage(), $message);
-        $this->assertEquals($logMessage->getContext(), []);
+        $this->assertEquals($level, $logMessage->getLevel());
+        $this->assertEquals($message, $logMessage->getMessage());
+        $this->assertEquals([], $logMessage->getContext());
     }
     
     public function testNoticeLevel()
@@ -66,9 +66,9 @@ class LogMessageTest extends PHPUnit_Framework_TestCase
         $message    = 'Notice level message.';
         $logMessage = new LogMessage($level, $message);
 
-        $this->assertEquals($logMessage->getLevel(), $level);
-        $this->assertEquals($logMessage->getMessage(), $message);
-        $this->assertEquals($logMessage->getContext(), []);
+        $this->assertEquals($level, $logMessage->getLevel());
+        $this->assertEquals($message, $logMessage->getMessage());
+        $this->assertEquals([], $logMessage->getContext());
     }
     
     public function testInfoLevel()
@@ -77,9 +77,9 @@ class LogMessageTest extends PHPUnit_Framework_TestCase
         $message    = 'Info level message.';
         $logMessage = new LogMessage($level, $message);
 
-        $this->assertEquals($logMessage->getLevel(), $level);
-        $this->assertEquals($logMessage->getMessage(), $message);
-        $this->assertEquals($logMessage->getContext(), []);
+        $this->assertEquals($level, $logMessage->getLevel());
+        $this->assertEquals($message, $logMessage->getMessage());
+        $this->assertEquals([], $logMessage->getContext());
     }
     
     public function testDebugLevel()
@@ -88,9 +88,9 @@ class LogMessageTest extends PHPUnit_Framework_TestCase
         $message    = 'Debug level message.';
         $logMessage = new LogMessage($level, $message);
 
-        $this->assertEquals($logMessage->getLevel(), $level);
-        $this->assertEquals($logMessage->getMessage(), $message);
-        $this->assertEquals($logMessage->getContext(), []);
+        $this->assertEquals($level, $logMessage->getLevel());
+        $this->assertEquals($message, $logMessage->getMessage());
+        $this->assertEquals([], $logMessage->getContext());
     }
     
     public function testInvalidLevel()
@@ -109,8 +109,8 @@ class LogMessageTest extends PHPUnit_Framework_TestCase
         $context    = [false, true, null, 'string', ['array'], 'key' => 'value'];
         $logMessage = new LogMessage($level, $message, $context);
 
-        $this->assertEquals($logMessage->getLevel(), $level);
-        $this->assertEquals($logMessage->getMessage(), $message);
-        $this->assertEquals($logMessage->getContext(), $context);
+        $this->assertEquals($level, $logMessage->getLevel());
+        $this->assertEquals($message, $logMessage->getMessage());
+        $this->assertEquals($context, $logMessage->getContext());
     }
 }
