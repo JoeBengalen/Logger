@@ -48,7 +48,7 @@ class FileHandler extends AbstractHandler
     /**
      * Log a message
      * 
-     * @param string    $level      Log level defined in \Psr\Log\LogLevel
+     * @param mixed     $level      Log level defined in \Psr\Log\LogLevel
      * @param string    $message    Message to log
      * @param mixed[]   $context    Extra information
      */
@@ -63,7 +63,7 @@ class FileHandler extends AbstractHandler
      * Adds the datetime, replaces the placeholders in the message and append the 
      * exception (if given) as string to the message.
      * 
-     * @param string    $level      Log level defined in \Psr\Log\LogLevel
+     * @param mixed     $level      Log level defined in \Psr\Log\LogLevel
      * @param string    $message    Message to log
      * @param mixed[]   $context    Extra information
      * 

@@ -19,8 +19,8 @@ abstract class AbstractHandler
     /**
      * Replaces placeholders in message with context values
      * 
-     * @param string $message The msaage with some placeholders
-     * @param array $context The replacements with named keys
+     * @param string    $message    The msaage with some placeholders
+     * @param array     $context    The replacements with named keys
      * 
      * @return string The interpolated message
      */
@@ -39,7 +39,7 @@ abstract class AbstractHandler
     /**
      * Log a message
      * 
-     * @param string    $level      Log level defined in \Psr\Log\LogLevel
+     * @param mixed     $level      Log level defined in \Psr\Log\LogLevel
      * @param string    $message    Message to log
      * @param mixed[]   $context    Extra information
      */

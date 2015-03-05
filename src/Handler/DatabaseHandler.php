@@ -62,7 +62,7 @@ class DatabaseHandler extends AbstractHandler
     /**
      * Log a message
      * 
-     * @param string    $level      Log level defined in \Psr\Log\LogLevel
+     * @param mixed     $level      Log level defined in \Psr\Log\LogLevel
      * @param string    $message    Message to log
      * @param mixed[]   $context    Extra information
      */

@@ -71,7 +71,7 @@ class Logger implements LoggerInterface
     /**
      * Calls each registered handler
      * 
-     * @param string    $level      Log level. Must be defined in \Psr\Log\LogLevel.
+     * @param mixed     $level      Log level. Must be defined in \Psr\Log\LogLevel.
      * @param string    $message    Message to log
      * @param array     $context    Context values sent along with the message
      * 
