@@ -9,6 +9,8 @@
  */
 namespace JoeBengalen\Logger\Handler;
 
+use \JoeBengalen\Logger\LogMessageInterface;
+
 /**
  * Abstract log handler
  * 
@@ -39,9 +41,7 @@ abstract class AbstractHandler
     /**
      * Log a message
      * 
-     * @param mixed     $level      Log level defined in \Psr\Log\LogLevel
-     * @param string    $message    Message to log
-     * @param mixed[]   $context    Extra information
+     * @param LogMessageInterface $logMessage LogMessageInterface instance
      */
-    abstract public function __invoke($level, $message, array $context = []);
+    abstract public function __invoke(LogMessageInterface $logMessage);
 }

@@ -83,10 +83,12 @@ class Logger implements LoggerInterface
         if (!in_array($level, $this->logLevels)) {
             throw new InvalidArgumentException("Log level '{$level}' is not reconized.");
         }
+        
+        $logMessage = new LogMessage($level, $message, $context);
 
         // call each handler
         foreach ($this->handlers as $handler) {
-            call_user_func_array($handler, [$level, $message, $context]);
+            call_user_func($handler, $logMessage);
         }
     }
 }
