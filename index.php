@@ -31,4 +31,6 @@ $logger->debug('Some debug information ...');
 $logger->info("User '{username}' created.", array('username' => 'JoeBengalen', 'extra' => true));
 $logger->critical("Unexpected Exception occurred.", ['exception' => new \Exception('Something went horribly wrong :(')]);
 
+var_dump($logger->getCollection()->getAllLogMessages());
+
 
