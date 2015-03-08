@@ -20,14 +20,14 @@ use Psr\Log\LogLevel;
 class Collection implements CollectionInterface
 {
     /**
-     * @var eBengalen\Logger\LogMessageInterface[] List of log messages 
+     * @var \JoeBengalen\Logger\LogMessageInterface[] List of log messages 
      */
     protected $logMessages = [];
     
     /**
      * Add a log message
      * 
-     * @param \JoeBengalen\Logger\LogMessageInterface $logMessage LogMessageInterface instance
+     * @param \JoeBengalen\Logger\LogMessageInterface $logMessage Log message
      */
     public function addLogMessage(LogMessageInterface $logMessage)
     {
