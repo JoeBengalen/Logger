@@ -32,7 +32,10 @@ class Logger implements LoggerInterface
      * @var array $options {
      *      @var callable $log.message.factory Alternative LogMessageInterface factory. 
      *          Callable arguments: mixed $level, string $message, array $context
-     *          It MUST return an instance of LogMessageInterface.
+     *          Callable MUST return an instance of LogMessageInterface.
+     *      @var callable|null $collection.factory Alternative CollectionInterface factory. 
+     *          Callable MUST return an instance of CollectionInterface.
+     *          Null means no collection will be used.
      * }
      */
     protected $options;
@@ -54,11 +57,16 @@ class Logger implements LoggerInterface
      * @param array         $options (optional)     {
      *      @var callable $log.message.factory Alternative LogMessageInterface factory. 
      *          Callable arguments: mixed $level, string $message, array $context
-     *          It MUST return an instance of LogMessageInterface.
+     *          Callable MUST return an instance of LogMessageInterface.
+     *      @var callable|null $collection.factory Alternative CollectionInterface factory. 
+     *          Callable MUST return an instance of CollectionInterface.
+     *          Null means no collection will be used.
      * }
      * 
      * @throws \InvalidArgumentException If any handler is not callable
      * @throws \InvalidArgumentException If option log.message.factory is not a callable
+     * @throws \InvalidArgumentException If option collection.factory is not a callable or null
+     * @throws \RuntimeException         If callable option collection.factory does not return an instance of \JoeBengalen\Logger\CollectionInterface
      */
     public function __construct(array $handlers = [], array $options = [])
     {
@@ -76,6 +84,11 @@ class Logger implements LoggerInterface
             // LogMessageInterface factory callable
             'log.message.factory' => function($level, $message, $context) {
                 return new LogMessage($level, $message, $context);
+            },
+            
+            // CollectionInterface factory callable
+            'collection.factory' => function() {
+                return new Collection();
             }
         ], $options);
         
@@ -84,7 +97,23 @@ class Logger implements LoggerInterface
             throw new \InvalidArgumentException("Option 'log.message.factory' must contain a callable");
         }
         
-        $this->collection = new Collection();
+        // try to initialize the collection if the collection.factory is not null
+        if (!is_null($this->options['collection.factory'])) {
+            // check if option collection.factory is a callable
+            if (!is_callable($this->options['collection.factory'])) {
+                throw new \InvalidArgumentException("Option 'collection.factory' must contain a callable or be null");
+            }
+            
+            // call the collection.factory
+            $collection = call_user_func($this->options['collection.factory']);
+            
+            // check if the factory returned an instance of \JoeBengalen\Logger\CollectionInterface
+            if (!$collection instanceof CollectionInterface) {
+                throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\Logger\CollectionInterface");
+            }
+            
+            $this->collection = $collection;
+        }
     }
 
     /**
@@ -107,8 +136,10 @@ class Logger implements LoggerInterface
             throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\Logger\LogMessageInterface");
         }
         
-        // add log message to collection
-        $this->collection->addLogMessage($logMessage);
+        // add log message to collection if collection is set
+        if (!is_null($this->collection)) {
+            $this->collection->addLogMessage($logMessage);
+        }
         
         // call each handler
         foreach ($this->handlers as $handler) {
@@ -119,7 +150,7 @@ class Logger implements LoggerInterface
     /**
      * Get the log message collection
      * 
-     * @return \JoeBengalen\Logger\CollectionInterface $collection Log message collection
+     * @return \JoeBengalen\Logger\CollectionInterface|null $collection Log message collection or null if not used
      */
     public function getCollection()
     {
