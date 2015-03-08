@@ -4,7 +4,7 @@ namespace JoeBengalen\Logger;
 use JoeBengalen\Logger\LogMessageInterface;
 use Psr\Log\LogLevel;
 
-class Collection
+class Collection implements CollectionInterface
 {
     /**
      * @var eBengalen\Logger\LogMessageInterface[] List of log messages 
