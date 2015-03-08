@@ -41,6 +41,11 @@ class Logger implements LoggerInterface
      * @var callable[] Log handlers 
      */
     protected $handlers = [];
+    
+    /**
+     * @var \JoeBengalen\Logger\CollectionInterface $collection Log message collector 
+     */
+    protected $collection;
 
     /**
      * Create a logger instance and register handlers
@@ -78,6 +83,8 @@ class Logger implements LoggerInterface
         if (!is_callable($this->options['log.message.factory'])) {
             throw new \InvalidArgumentException("Option 'log.message.factory' must contain a callable");
         }
+        
+        $this->collection = new Collection();
     }
 
     /**
@@ -100,9 +107,22 @@ class Logger implements LoggerInterface
             throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\Logger\LogMessageInterface");
         }
         
+        // add log message to collection
+        $this->collection->addLogMessage($logMessage);
+        
         // call each handler
         foreach ($this->handlers as $handler) {
             call_user_func($handler, $logMessage);
         }
+    }
+    
+    /**
+     * Get the log message collection
+     * 
+     * @return \JoeBengalen\Logger\CollectionInterface $collection Log message collection
+     */
+    public function getCollection()
+    {
+        return $this->collection;
     }
 }
