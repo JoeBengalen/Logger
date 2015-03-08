@@ -133,8 +133,8 @@ class Collection implements CollectionInterface
      */
     protected function filterLogMessagesByLevel($level)
     {
-        return array_filter($this->logMessages, function($logMessage) use ($level) {
+        return array_values(array_filter($this->logMessages, function($logMessage) use ($level) {
             return $logMessage->getLevel() === $level;
-        });
+        }));
     }
 }
