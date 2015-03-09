@@ -3,12 +3,12 @@
     "type": "library",
     "description": "Lightweight psr-3 logger library.",
     "keywords": ["logger", "log", "logging", "psr-3"],
-    "homepage": "https://github.com/JoeBengalen/Logger",
+    "homepage": "https://github.com/JoeBengalen/JBLogger",
     "license": "MIT",
     "authors": [
         {
             "name": "Martijn Wennink",
-            "email": "JoeBengalen@users.noreply.github.com"
+            "email": "joebengalen@gmail.com"
         }
     ],
     "support": {
