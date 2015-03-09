@@ -1,8 +1,8 @@
 <?php
 
-use JoeBengalen\Logger\LogMessageInterface;
+use JoeBengalen\JBLogger\LogMessageInterface;
 
-class InvokableHandler extends JoeBengalen\Logger\Handler\AbstractHandler
+class InvokableHandler extends JoeBengalen\JBLogger\Handler\AbstractHandler
 {
     public function __invoke(LogMessageInterface $logMessage)
     {

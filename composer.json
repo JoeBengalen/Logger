@@ -1,5 +1,5 @@
 {
-    "name": "joebengalen/logger",
+    "name": "joebengalen/jblogger",
     "type": "library",
     "description": "Lightweight psr-3 logger library.",
     "keywords": ["logger", "log", "logging", "psr-3"],
@@ -12,16 +12,19 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/JoeBengalen/Logger/issues",
-        "source": "https://github.com/JoeBengalen/Logger"
+        "issues": "https://github.com/JoeBengalen/JBLogger/issues",
+        "source": "https://github.com/JoeBengalen/JBLogger"
     },
     "require": {
         "php": ">=5.4",
         "psr/log": "~1.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
     "autoload": {
         "psr-4": {
-            "JoeBengalen\\Logger\\": "src/"
+            "JoeBengalen\\JBLogger\\": "src/"
         }
     }
 }

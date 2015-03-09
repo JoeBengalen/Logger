@@ -4,12 +4,12 @@
  * 
  * @author      Martijn Wennink <joebengalen@gmail.com>
  * @copyright   Copyright (c) 2015 Martijn Wennink
- * @license     https://github.com/JoeBengalen/Logger/blob/master/LICENSE.md (MIT License)
+ * @license     https://github.com/JoeBengalen/JBLogger/blob/master/LICENSE.md (MIT License)
  * @version     0.1.0
  */
-namespace JoeBengalen\Logger\Handler;
+namespace JoeBengalen\JBLogger\Handler;
 
-use \JoeBengalen\Logger\LogMessageInterface;
+use \JoeBengalen\JBLogger\LogMessageInterface;
 
 /**
  * Database log handler
