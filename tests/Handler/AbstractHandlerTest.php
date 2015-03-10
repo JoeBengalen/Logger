@@ -1,9 +1,10 @@
 <?php
+namespace JoeBengalen\JBLogger\Test\Handler;
 
-use JoeBengalen\Logger\LogMessage;
+use JoeBengalen\JBLogger\LogMessage;
 use Psr\Log\LogLevel;
 
-class AbstractHanderTest extends PHPUnit_Framework_TestCase
+class AbstractHanderTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterpolate()
     {        

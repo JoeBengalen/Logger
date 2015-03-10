@@ -1,9 +1,10 @@
 <?php
+namespace JoeBengalen\JBLogger\Test;
 
-use JoeBengalen\Logger\LogMessage;
+use JoeBengalen\JBLogger\LogMessage;
 use Psr\Log\LogLevel;
 
-class LogMessageTest extends PHPUnit_Framework_TestCase
+class LogMessageTest extends \PHPUnit_Framework_TestCase
 {
     public function testEmergencyLevel()
     {

@@ -4,10 +4,10 @@
  * 
  * @author      Martijn Wennink <joebengalen@gmail.com>
  * @copyright   Copyright (c) 2015 Martijn Wennink
- * @license     https://github.com/JoeBengalen/Logger/blob/master/LICENSE.md (MIT License)
+ * @license     https://github.com/JoeBengalen/JBLogger/blob/master/LICENSE.md (MIT License)
  * @version     0.1.0
  */
-namespace JoeBengalen\Logger;
+namespace JoeBengalen\JBLogger;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
@@ -46,7 +46,7 @@ class Logger implements LoggerInterface
     protected $handlers = [];
     
     /**
-     * @var \JoeBengalen\Logger\CollectionInterface $collection Log message collector 
+     * @var \JoeBengalen\JBLogger\CollectionInterface $collection Log message collector 
      */
     protected $collection;
 
@@ -66,7 +66,7 @@ class Logger implements LoggerInterface
      * @throws \InvalidArgumentException If any handler is not callable
      * @throws \InvalidArgumentException If option log.message.factory is not a callable
      * @throws \InvalidArgumentException If option collection.factory is not a callable or null
-     * @throws \RuntimeException         If callable option collection.factory does not return an instance of \JoeBengalen\Logger\CollectionInterface
+     * @throws \RuntimeException         If callable option collection.factory does not return an instance of \JoeBengalen\JBLogger\CollectionInterface
      */
     public function __construct(array $handlers = [], array $options = [])
     {
@@ -107,9 +107,9 @@ class Logger implements LoggerInterface
             // call the collection.factory
             $collection = call_user_func($this->options['collection.factory']);
             
-            // check if the factory returned an instance of \JoeBengalen\Logger\CollectionInterface
+            // check if the factory returned an instance of \JoeBengalen\JBLogger\CollectionInterface
             if (!$collection instanceof CollectionInterface) {
-                throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\Logger\CollectionInterface");
+                throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\JBLogger\CollectionInterface");
             }
             
             $this->collection = $collection;
@@ -124,16 +124,16 @@ class Logger implements LoggerInterface
      * @param array     $context    Context values sent along with the message
      * 
      * @throws \Psr\Log\InvalidArgumentException    If the $level is not defined in \Psr\Log\LogLevel
-     * @throws \RuntimeException                    If callable option 'log.message.factory' does not return an instance of \JoeBengalen\Logger\LogMessageInterface
+     * @throws \RuntimeException                    If callable option 'log.message.factory' does not return an instance of \JoeBengalen\JBLogger\LogMessageInterface
      */
     public function log($level, $message, array $context = [])
     {
         // create a LogMessageInterface instance with the registered log.message.factory callable
         $logMessage = call_user_func_array($this->options['log.message.factory'], [$level, $message, $context]);
         
-        // check if the factory returned an instance of \JoeBengalen\Logger\LogMessageInterface
+        // check if the factory returned an instance of \JoeBengalen\JBLogger\LogMessageInterface
         if (!$logMessage instanceof LogMessageInterface) {
-            throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\Logger\LogMessageInterface");
+            throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\JBLogger\LogMessageInterface");
         }
         
         // add log message to collection if collection is set
@@ -150,7 +150,7 @@ class Logger implements LoggerInterface
     /**
      * Get the log message collection
      * 
-     * @return \JoeBengalen\Logger\CollectionInterface|null $collection Log message collection or null if not used
+     * @return \JoeBengalen\JBLogger\CollectionInterface|null $collection Log message collection or null if not used
      */
     public function getCollection()
     {
