@@ -1,4 +1,5 @@
 <?php
+namespace JoeBengalen\JBLogger\Test\Handler;
 
 use JoeBengalen\JBLogger\Handler\DatabaseHandler;
 use Psr\Log\LogLevel;
@@ -22,7 +23,7 @@ class PdoMock extends \PDO
     }
 }
 
-class DatabaseHandlerTest extends PHPUnit_Framework_TestCase
+class DatabaseHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function testInvoke()
     {

@@ -1,4 +1,5 @@
 <?php
+namespace JoeBengalen\JBLogger\Test;
 
 use JoeBengalen\JBLogger;
 use JoeBengalen\JBLogger\LogMessageInterface;
@@ -35,13 +36,13 @@ class InvokableObject
     }
 }
 
-class LoggerTest extends PHPUnit_Framework_TestCase
+class LoggerTest extends \PHPUnit_Framework_TestCase
 {
     public function testInitialization()
     {
         $logger = new JBLogger\Logger();
 
-        $this->assertInstanceOf('JoeBengalen\JBLogger\Logger', $logger);
+        $this->assertInstanceOf('\JoeBengalen\JBLogger\Logger', $logger);
     }
 
     public function testAnonymousHandler()
@@ -63,7 +64,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
     {
         $expectedResult = 'log message';
 
-        $logger = new JBLogger\Logger(['namedFunction']);
+        $logger = new JBLogger\Logger(['\JoeBengalen\JBLogger\Test\namedFunction']);
 
         $logger->info($expectedResult);
 
@@ -75,7 +76,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = 'log message';
 
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoMessage']
         ]);
 
         $logger->info($expectedResult);
@@ -88,7 +89,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = 'log message';
 
         $logger = new JBLogger\Logger([
-            [new DummyHandler, 'echoMessage']
+            [new \JoeBengalen\JBLogger\Test\DummyHandler, 'echoMessage']
         ]);
 
         $logger->info($expectedResult);
@@ -173,7 +174,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = LogLevel::DEBUG. '::' . $message;
 
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoLevelMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoLevelMessage']
         ]);
 
         $logger->debug($message);
@@ -187,7 +188,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = LogLevel::INFO. '::' . $message;
 
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoLevelMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoLevelMessage']
         ]);
 
         $logger->info($message);
@@ -201,7 +202,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = LogLevel::NOTICE. '::' . $message;
 
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoLevelMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoLevelMessage']
         ]);
 
         $logger->notice($message);
@@ -215,7 +216,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = LogLevel::ALERT. '::' . $message;
 
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoLevelMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoLevelMessage']
         ]);
 
         $logger->alert($message);
@@ -229,7 +230,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = LogLevel::WARNING. '::' . $message;
 
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoLevelMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoLevelMessage']
         ]);
 
         $logger->warning($message);
@@ -243,7 +244,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = LogLevel::ERROR. '::' . $message;
 
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoLevelMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoLevelMessage']
         ]);
 
         $logger->error($message);
@@ -257,7 +258,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = LogLevel::CRITICAL. '::' . $message;
 
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoLevelMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoLevelMessage']
         ]);
 
         $logger->critical($message);
@@ -271,7 +272,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $expectedResult = LogLevel::EMERGENCY. '::' . $message;
 
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoLevelMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoLevelMessage']
         ]);
 
         $logger->emergency($message);
@@ -284,7 +285,7 @@ class LoggerTest extends PHPUnit_Framework_TestCase
         $message = 'log message';
         
         $logger = new JBLogger\Logger([
-            ['\DummyHandler', 'staticEchoLevelMessage']
+            ['\JoeBengalen\JBLogger\Test\DummyHandler', 'staticEchoLevelMessage']
         ]);
         
         $this->setExpectedException('\Psr\Log\InvalidArgumentException');

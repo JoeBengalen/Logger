@@ -1,9 +1,10 @@
 <?php
+namespace JoeBengalen\JBLogger\Test;
 
 use JoeBengalen\JBLogger\Collection;
 use Psr\Log\LogLevel;
 
-class CollectionTest extends PHPUnit_Framework_TestCase
+class CollectionTest extends \PHPUnit_Framework_TestCase
 {
     protected function getLogMessageInstance($level = null)
     {

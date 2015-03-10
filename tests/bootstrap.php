@@ -1,11 +1,26 @@
 <?php
+namespace JoeBengalen\JBLogger\Test;
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 // loader for some extra file used by soem tests
 spl_autoload_register(function ($class) {
-    $file = __DIR__ . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-    if (file_exists($file)) {
-        require $file;
+    $map = [
+        'JoeBengalen\\JBLogger\\Test\\' => __DIR__ . DIRECTORY_SEPARATOR,
+    ];
+
+    foreach ($map as $prefix => $source) {
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
+            continue;
+        }
+
+        $relativeClass = substr($class, $len);
+        $file          = $source . str_replace('\\', '/', $relativeClass) . '.php';
+
+        if (file_exists($file)) {
+            require $file;
+            break;
+        }
     }
 });
