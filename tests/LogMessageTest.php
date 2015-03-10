@@ -1,7 +1,7 @@
 <?php
-namespace JoeBengalen\JBLogger\Test;
+namespace JoeBengalen\Logger\Test;
 
-use JoeBengalen\JBLogger\LogMessage;
+use JoeBengalen\Logger\LogMessage;
 use Psr\Log\LogLevel;
 
 class LogMessageTest extends \PHPUnit_Framework_TestCase

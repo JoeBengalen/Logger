@@ -1,8 +1,8 @@
 <?php
-namespace JoeBengalen\JBLogger\Test\Handler;
+namespace JoeBengalen\Logger\Test\Handler;
 
-use JoeBengalen\JBLogger\LogMessageInterface;
-use JoeBengalen\JBLogger\Handler\AbstractHandler;
+use JoeBengalen\Logger\LogMessageInterface;
+use JoeBengalen\Logger\Handler\AbstractHandler;
 
 class InvokableHandler extends AbstractHandler
 {

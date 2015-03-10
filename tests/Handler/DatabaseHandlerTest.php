@@ -1,7 +1,7 @@
 <?php
-namespace JoeBengalen\JBLogger\Test\Handler;
+namespace JoeBengalen\Logger\Test\Handler;
 
-use JoeBengalen\JBLogger\Handler\DatabaseHandler;
+use JoeBengalen\Logger\Handler\DatabaseHandler;
 use Psr\Log\LogLevel;
 
 class PdoMock extends \PDO

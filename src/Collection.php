@@ -4,12 +4,12 @@
  * 
  * @author      Martijn Wennink <joebengalen@gmail.com>
  * @copyright   Copyright (c) 2015 Martijn Wennink
- * @license     https://github.com/JoeBengalen/JBLogger/blob/master/LICENSE.md (MIT License)
+ * @license     https://github.com/JoeBengalen/Logger/blob/master/LICENSE.md (MIT License)
  * @version     0.1.0
  */
-namespace JoeBengalen\JBLogger;
+namespace JoeBengalen\Logger;
 
-use JoeBengalen\JBLogger\LogMessageInterface;
+use JoeBengalen\Logger\LogMessageInterface;
 use Psr\Log\LogLevel;
 
 /**
@@ -20,14 +20,14 @@ use Psr\Log\LogLevel;
 class Collection implements CollectionInterface
 {
     /**
-     * @var \JoeBengalen\JBLogger\LogMessageInterface[] List of log messages 
+     * @var \JoeBengalen\Logger\LogMessageInterface[] List of log messages 
      */
     protected $logMessages = [];
     
     /**
      * Add a log message
      * 
-     * @param \JoeBengalen\JBLogger\LogMessageInterface $logMessage Log message
+     * @param \JoeBengalen\Logger\LogMessageInterface $logMessage Log message
      */
     public function addLogMessage(LogMessageInterface $logMessage)
     {
@@ -37,7 +37,7 @@ class Collection implements CollectionInterface
     /**
      * Get all log messages
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages
      */
     public function getAllLogMessages()
     {
@@ -47,7 +47,7 @@ class Collection implements CollectionInterface
     /**
      * Get emergency log messages
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages with level emergency
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level emergency
      */
     public function getEmergencyLogMessages()
     {
@@ -57,7 +57,7 @@ class Collection implements CollectionInterface
     /**
      * Get alert log messages
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages with level alert
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level alert
      */
     public function getAlertLogMessages()
     {
@@ -67,7 +67,7 @@ class Collection implements CollectionInterface
     /**
      * Get critical log messages
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages with level critical
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level critical
      */
     public function getCriticalLogMessages()
     {
@@ -77,7 +77,7 @@ class Collection implements CollectionInterface
     /**
      * Get error log messages
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages with level error
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level error
      */
     public function getErrorLogMessages()
     {
@@ -87,7 +87,7 @@ class Collection implements CollectionInterface
     /**
      * Get warning log messages
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages with level warning
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level warning
      */
     public function getWarningLogMessages()
     {
@@ -97,7 +97,7 @@ class Collection implements CollectionInterface
     /**
      * Get notice log messages
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages with level notice
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level notice
      */
     public function getNoticeLogMessages()
     {
@@ -107,7 +107,7 @@ class Collection implements CollectionInterface
     /**
      * Get info log messages
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages with level info
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level info
      */
     public function getInfoLogMessages()
     {
@@ -117,7 +117,7 @@ class Collection implements CollectionInterface
     /**
      * Get debug log messages
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages with level debug
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level debug
      */
     public function getDebugLogMessages()
     {
@@ -129,7 +129,7 @@ class Collection implements CollectionInterface
      * 
      * @param mixed $level Log level defined in \Psr\Log\LogLevel
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface[] All log messages with the given level
+     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with the given level
      */
     protected function filterLogMessagesByLevel($level)
     {

@@ -1,7 +1,7 @@
 <?php
-namespace JoeBengalen\JBLogger\Test\Handler;
+namespace JoeBengalen\Logger\Test\Handler;
 
-use JoeBengalen\JBLogger\LogMessage;
+use JoeBengalen\Logger\LogMessage;
 use Psr\Log\LogLevel;
 
 class AbstractHanderTest extends \PHPUnit_Framework_TestCase

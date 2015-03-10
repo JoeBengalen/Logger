@@ -1,12 +1,12 @@
 <?php
-namespace JoeBengalen\JBLogger\Test;
+namespace JoeBengalen\Logger\Test;
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 // loader for some extra file used by soem tests
 spl_autoload_register(function ($class) {
     $map = [
-        'JoeBengalen\\JBLogger\\Test\\' => __DIR__ . DIRECTORY_SEPARATOR,
+        'JoeBengalen\\Logger\\Test\\' => __DIR__ . DIRECTORY_SEPARATOR,
     ];
 
     foreach ($map as $prefix => $source) {

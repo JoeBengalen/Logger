@@ -4,10 +4,10 @@
  * 
  * @author      Martijn Wennink <joebengalen@gmail.com>
  * @copyright   Copyright (c) 2015 Martijn Wennink
- * @license     https://github.com/JoeBengalen/JBLogger/blob/master/LICENSE.md (MIT License)
+ * @license     https://github.com/JoeBengalen/Logger/blob/master/LICENSE.md (MIT License)
  * @version     0.1.0
  */
-namespace JoeBengalen\JBLogger;
+namespace JoeBengalen\Logger;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
@@ -46,7 +46,7 @@ class Logger implements LoggerInterface
     protected $handlers = [];
     
     /**
-     * @var \JoeBengalen\JBLogger\CollectionInterface $collection Log message collector 
+     * @var \JoeBengalen\Logger\CollectionInterface $collection Log message collector 
      */
     protected $collection;
 
@@ -66,7 +66,7 @@ class Logger implements LoggerInterface
      * @throws \InvalidArgumentException If any handler is not callable
      * @throws \InvalidArgumentException If option log.message.factory is not a callable
      * @throws \InvalidArgumentException If option collection.factory is not a callable or null
-     * @throws \RuntimeException         If callable option collection.factory does not return an instance of \JoeBengalen\JBLogger\CollectionInterface
+     * @throws \RuntimeException         If callable option collection.factory does not return an instance of \JoeBengalen\Logger\CollectionInterface
      */
     public function __construct(array $handlers = [], array $options = [])
     {
@@ -112,7 +112,7 @@ class Logger implements LoggerInterface
      * @param array     $context    Context values sent along with the message
      * 
      * @throws \Psr\Log\InvalidArgumentException    If the $level is not defined in \Psr\Log\LogLevel
-     * @throws \RuntimeException                    If callable option 'log.message.factory' does not return an instance of \JoeBengalen\JBLogger\LogMessageInterface
+     * @throws \RuntimeException                    If callable option 'log.message.factory' does not return an instance of \JoeBengalen\Logger\LogMessageInterface
      */
     public function log($level, $message, array $context = [])
     {
@@ -128,7 +128,7 @@ class Logger implements LoggerInterface
     /**
      * Get the log message collection
      * 
-     * @return \JoeBengalen\JBLogger\CollectionInterface|null $collection Log message collection or null if not used
+     * @return \JoeBengalen\Logger\CollectionInterface|null $collection Log message collection or null if not used
      */
     public function getCollection()
     {
@@ -138,7 +138,7 @@ class Logger implements LoggerInterface
     /**
      * Call each handler
      * 
-     * @param \JoeBengalen\JBLogger\LogMessageInterface $logMessage
+     * @param \JoeBengalen\Logger\LogMessageInterface $logMessage
      */
     protected function callHandlers(LogMessageInterface $logMessage)
     {
@@ -154,16 +154,16 @@ class Logger implements LoggerInterface
      * @param string    $message    Message to log
      * @param array     $context    Context values sent along with the message
      * 
-     * @return \JoeBengalen\JBLogger\LogMessageInterface
+     * @return \JoeBengalen\Logger\LogMessageInterface
      * 
-     * @throws \RuntimeException    If callable option 'log.message.factory' does not return an instance of \JoeBengalen\JBLogger\LogMessageInterface
+     * @throws \RuntimeException    If callable option 'log.message.factory' does not return an instance of \JoeBengalen\Logger\LogMessageInterface
      */
     protected function createLogMessage($level, $message, array $context)
     {
         $logMessage = call_user_func_array($this->options['log.message.factory'], [$level, $message, $context]);
         
         if (!$logMessage instanceof LogMessageInterface) {
-            throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\JBLogger\LogMessageInterface");
+            throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\Logger\LogMessageInterface");
         }
         
         return $logMessage;
@@ -172,9 +172,9 @@ class Logger implements LoggerInterface
     /**
      * Create a new collection
      * 
-     * @return \JoeBengalen\JBLogger\CollectionInterface|null
+     * @return \JoeBengalen\Logger\CollectionInterface|null
      * 
-     * @throws \RuntimeException If callable option collection.factory does not return an instance of \JoeBengalen\JBLogger\CollectionInterface
+     * @throws \RuntimeException If callable option collection.factory does not return an instance of \JoeBengalen\Logger\CollectionInterface
      */
     protected function createCollection()
     {
@@ -182,7 +182,7 @@ class Logger implements LoggerInterface
             $collection = call_user_func($this->options['collection.factory']);
             
             if (!$collection instanceof CollectionInterface) {
-                throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\JBLogger\CollectionInterface");
+                throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\Logger\CollectionInterface");
             }
             
             return $collection;

@@ -1,9 +1,9 @@
 {
-    "name": "joebengalen/jblogger",
+    "name": "joebengalen/logger",
     "type": "library",
     "description": "Lightweight psr-3 logger library.",
     "keywords": ["logger", "log", "logging", "psr-3"],
-    "homepage": "https://github.com/JoeBengalen/JBLogger",
+    "homepage": "https://github.com/JoeBengalen/Logger",
     "license": "MIT",
     "authors": [
         {
@@ -12,8 +12,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/JoeBengalen/JBLogger/issues",
-        "source": "https://github.com/JoeBengalen/JBLogger"
+        "issues": "https://github.com/JoeBengalen/Logger/issues",
+        "source": "https://github.com/JoeBengalen/Logger"
     },
     "require": {
         "php": ">=5.4",
@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JoeBengalen\\JBLogger\\": "src/"
+            "JoeBengalen\\Logger\\": "src/"
         }
     }
 }

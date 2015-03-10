@@ -1,14 +1,14 @@
 <?php
-namespace JoeBengalen\JBLogger\Test;
+namespace JoeBengalen\Logger\Test;
 
-use JoeBengalen\JBLogger\Collection;
+use JoeBengalen\Logger\Collection;
 use Psr\Log\LogLevel;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {
     protected function getLogMessageInstance($level = null)
     {
-        $mock = $this->getMock('\JoeBengalen\JBLogger\LogMessageInterface');
+        $mock = $this->getMock('\JoeBengalen\Logger\LogMessageInterface');
         $mock->method('getLevel')->willReturn($level);
         return $mock;
     }
