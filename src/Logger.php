@@ -123,7 +123,7 @@ class Logger implements LoggerInterface
         $messageInstance = $this->createMessage($level, $message, $context);
 
         if (!is_null($this->collection)) {
-            $this->collection->addMessage($message);
+            $this->collection->addMessage($messageInstance);
         }
 
         $this->callHandlers($messageInstance);
@@ -170,7 +170,7 @@ class Logger implements LoggerInterface
             throw new \RuntimeException("Option 'message.factory' callable must return an instance of \JoeBengalen\Logger\MessageInterface");
         }
 
-        return $message;
+        return $messageInstance;
     }
 
     /**
