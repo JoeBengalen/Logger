@@ -1,5 +1,5 @@
 # Logger
-[![Build Status](https://travis-ci.org/JoeBengalen/JBLogger.svg?branch=master)](https://travis-ci.org/JoeBengalen/JBLogger)
+[![Build Status](https://travis-ci.org/JoeBengalen/JBLogger.svg?branch=develop)](https://travis-ci.org/JoeBengalen/JBLogger)
 
 Lightweight [psr-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md) logger library.
 
