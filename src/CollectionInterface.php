@@ -11,7 +11,6 @@
 
 namespace JoeBengalen\Logger;
 
-
 /**
  * Message Interface.
  *

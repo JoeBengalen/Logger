@@ -26,9 +26,9 @@ class FileHandler extends AbstractHandler
     protected $file;
 
     /**
-     * @var array {
-     * @var string.format The datetime format to log in
-     *            }
+     * @var array $options {
+     *      @var string $datetime.format The datetime format to log in
+     * }
      */
     protected $options;
 
@@ -37,8 +37,7 @@ class FileHandler extends AbstractHandler
      *
      * @param string $logFile Absolute path of the log file
      * @param array  $options (optional) {
-     *
-     *      @var string.format The datetime format to log in
+     *      @var string $datetime.format The datetime format to log in
      * }
      */
     public function __construct($logFile, array $options = [])
@@ -47,7 +46,7 @@ class FileHandler extends AbstractHandler
 
         $this->options = array_merge([
             'datetime.format' => 'Y-m-d h:m:s',
-        ], $options);
+                ], $options);
     }
 
     /**
@@ -75,13 +74,13 @@ class FileHandler extends AbstractHandler
     protected function format($level, $message, array $context = [])
     {
         $interpolatedMessage = $this->interpolate($message, $context);
-        $now = new \DateTime('NOW');
-        $result = $now->format($this->options['datetime.format']).' '.strtoupper($level).": {$interpolatedMessage}";
+        $now                 = new \DateTime('NOW');
+        $result              = $now->format($this->options['datetime.format']) . ' ' . strtoupper($level) . ": {$interpolatedMessage}";
 
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
-            $result .= ": ".(string) $context['exception'];
+            $result .= ": " . (string) $context['exception'];
         }
 
-        return $result.PHP_EOL;
+        return $result . PHP_EOL;
     }
 }

@@ -29,16 +29,16 @@ class Logger implements LoggerInterface
     const VERSION = '0.1.0';
 
     use LoggerTrait;
-
+    
     /**
-     * @var array         {
-     * @var callable      .factory    Alternative MessageInterface factory.
-     *                    Callable arguments: mixed $level, string $message, array $context
-     *                    Callable MUST return an instance of MessageInterface.
-     * @var callable|null .factory Alternative CollectionInterface factory.
-     *                    Callable MUST return an instance of CollectionInterface.
-     *                    Null means no collection will be used.
-     *                    }
+     * @var array $options {
+     *      @var callable $message.factory          Alternative MessageInterface factory.
+     *                                              Callable arguments: mixed $level, string $message, array $context
+     *                                              Callable MUST return an instance of MessageInterface.
+     *      @var callable|null $collection.factory  Alternative CollectionInterface factory.
+     *                                              Callable MUST return an instance of CollectionInterface.
+     *                                              Null means no collection will be used.
+     * }
      */
     protected $options;
 
@@ -57,11 +57,10 @@ class Logger implements LoggerInterface
      *
      * @param callable[] $handlers (optional)    List of callable handlers
      * @param array      $options  (optional)     {
-     *
-     *      @var callable      .factory    Alternative MessageInterface factory.
+     *      @var callable $message.factory          Alternative MessageInterface factory.
      *                                              Callable arguments: mixed $level, string $message, array $context
      *                                              Callable MUST return an instance of MessageInterface.
-     *      @var callable|null .factory Alternative CollectionInterface factory.
+     *      @var callable|null $collection.factory  Alternative CollectionInterface factory.
      *                                              Callable MUST return an instance of CollectionInterface.
      *                                              Null means no collection will be used.
      * }
@@ -82,15 +81,17 @@ class Logger implements LoggerInterface
 
         // merge default options with the given options
         $this->options = array_merge([
+            
             // MessageInterface factory callable
             'message.factory' => function ($level, $message, $context) {
                 return new Message($level, $message, $context);
             },
-
+            
             // CollectionInterface factory callable
             'collection.factory' => function () {
                 return new Collection();
             },
+            
         ], $options);
 
         // check if option message.factory is a callable
@@ -119,13 +120,13 @@ class Logger implements LoggerInterface
      */
     public function log($level, $message, array $context = [])
     {
-        $message = $this->createMessage($level, $message, $context);
+        $messageInstance = $this->createMessage($level, $message, $context);
 
         if (!is_null($this->collection)) {
             $this->collection->addMessage($message);
         }
 
-        $this->callHandlers($message);
+        $this->callHandlers($messageInstance);
     }
 
     /**
@@ -163,9 +164,9 @@ class Logger implements LoggerInterface
      */
     protected function createMessage($level, $message, array $context)
     {
-        $message = call_user_func_array($this->options['message.factory'], [$level, $message, $context]);
+        $messageInstance = call_user_func_array($this->options['message.factory'], [$level, $message, $context]);
 
-        if (!$message instanceof MessageInterface) {
+        if (!$messageInstance instanceof MessageInterface) {
             throw new \RuntimeException("Option 'message.factory' callable must return an instance of \JoeBengalen\Logger\MessageInterface");
         }
 

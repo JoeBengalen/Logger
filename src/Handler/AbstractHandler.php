@@ -33,7 +33,7 @@ abstract class AbstractHandler
         // build a replacement array with braces around the context keys
         $replace = [];
         foreach ($context as $key => $val) {
-            $replace['{'.$key.'}'] = $val;
+            $replace['{' . $key . '}'] = $val;
         }
 
         // interpolate replacement values into the message and return

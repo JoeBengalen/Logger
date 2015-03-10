@@ -27,12 +27,12 @@ class DatabaseHandler extends AbstractHandler
 
     /**
      * @var array {
-     * @var string              Table name
-     * @var string.datetime    Datetime column name
-     * @var string.level       Level column name
-     * @var string.message     Message column name
-     * @var string.context     Context column name
-     *            }
+     *      @var string $table              Table name
+     *      @var string $column.datetime    Datetime column name
+     *      @var string $column.level       Level column name
+     *      @var string $column.message     Message column name
+     *      @var string $column.context     Context column name
+     * }
      */
     protected $options;
 
@@ -42,13 +42,12 @@ class DatabaseHandler extends AbstractHandler
      * This handler logs the message to a database
      *
      * @param \PDO  $connection Connection instance
-     * @param array $options    (optional) {
-     *
-     *      @var string              Table name
-     *      @var string.datetime    Datetime column name
-     *      @var string.level       Level column name
-     *      @var string.message     Message column name
-     *      @var string.context     Context column name
+     * @param array $options (optional) {
+     *      @var string $table              Table name
+     *      @var string $column.datetime    Datetime column name
+     *      @var string $column.level       Level column name
+     *      @var string $column.message     Message column name
+     *      @var string $column.context     Context column name
      * }
      */
     public function __construct(\PDO $connection, array $options = [])
@@ -61,7 +60,7 @@ class DatabaseHandler extends AbstractHandler
             'column.level'    => 'level',
             'column.message'  => 'message',
             'column.context'  => 'context',
-        ], $options);
+                ], $options);
     }
 
     /**
@@ -72,12 +71,11 @@ class DatabaseHandler extends AbstractHandler
     public function __invoke(MessageInterface $message)
     {
         $interpolatedMessage = $this->interpolate($message->getMessage(), $message->getContext());
-
-        $context = $message->getContext();
+        $context             = $message->getContext();
 
         // Check for a \Exception in the context
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
-            $interpolatedMessage .= " ".(string) $context['exception'];
+            $interpolatedMessage .= " " . (string) $context['exception'];
             unset($context['exception']);
         }
 
