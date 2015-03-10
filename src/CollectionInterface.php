@@ -9,19 +9,19 @@
  */
 namespace JoeBengalen\Logger;
 
-use JoeBengalen\Logger\LogMessageInterface;
+use JoeBengalen\Logger\MessageInterface;
 
 /**
- * Log Message Interface
+ * Message Interface
  * 
- * Defines a log message collection
+ * Defines a message collection
  */
 interface CollectionInterface
 {
     /**
-     * Add a log message
+     * Add a message
      * 
-     * @param \JoeBengalen\Logger\LogMessageInterface $logMessage LogMessageInterface instance
+     * @param \JoeBengalen\Logger\MessageInterface $message MessageInterface instance
      */
-    public function addLogMessage(LogMessageInterface $logMessage);
+    public function addMessage(MessageInterface $message);
 }

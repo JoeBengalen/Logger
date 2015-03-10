@@ -10,14 +10,14 @@
 namespace JoeBengalen\Logger;
 
 /**
- * Log Message Interface
+ * Message Interface
  * 
- * Defines a log message
+ * Defines a message
  */
-interface LogMessageInterface
+interface MessageInterface
 {
     /**
-     * Create a new log message
+     * Create a new message
      * 
      * @param string    $level      Level, defined in \Psr\Log\LogLevel
      * @param string    $message    Message

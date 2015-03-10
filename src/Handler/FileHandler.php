@@ -9,7 +9,7 @@
  */
 namespace JoeBengalen\Logger\Handler;
 
-use \JoeBengalen\Logger\LogMessageInterface;
+use \JoeBengalen\Logger\MessageInterface;
 
 /**
  * File logging handler
@@ -50,11 +50,11 @@ class FileHandler extends AbstractHandler
     /**
      * Log a message
      * 
-     * @param LogMessageInterface $logMessage LogMessageInterface instance
+     * @param MessageInterface $message MessageInterface instance
      */
-    public function __invoke(LogMessageInterface $logMessage)
+    public function __invoke(MessageInterface $message)
     {
-        file_put_contents($this->file, $this->format($logMessage->getLevel(), $logMessage->getMessage(), $logMessage->getContext()), FILE_APPEND);
+        file_put_contents($this->file, $this->format($message->getLevel(), $message->getMessage(), $message->getContext()), FILE_APPEND);
     }
 
     /**

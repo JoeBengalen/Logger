@@ -13,11 +13,11 @@ use Psr\Log\LogLevel;
 use Psr\Log\InvalidArgumentException;
 
 /**
- * LogMessage
+ * Message
  * 
- * Immutable holder for the log message data
+ * Immutable holder for the message data
  */
-class LogMessage implements LogMessageInterface
+class Message implements MessageInterface
 {
     /**
      * @var mixed $level Level, defined in \Psr\Log\LogLevel
@@ -35,7 +35,7 @@ class LogMessage implements LogMessageInterface
     protected $context;
 
     /**
-     * Create a new log message
+     * Create a new message
      * 
      * @param mixed     $level      Level, defined in \Psr\Log\LogLevel
      * @param string    $message    Message

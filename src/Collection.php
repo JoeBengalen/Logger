@@ -9,132 +9,132 @@
  */
 namespace JoeBengalen\Logger;
 
-use JoeBengalen\Logger\LogMessageInterface;
+use JoeBengalen\Logger\MessageInterface;
 use Psr\Log\LogLevel;
 
 /**
- * LogMessage Collection
+ * Message Collection
  * 
- * Collector of LogMessageInterface instances, which can be retrieved by their log level
+ * Collector of MessageInterface instances, which can be retrieved by their log level
  */
 class Collection implements CollectionInterface
 {
     /**
-     * @var \JoeBengalen\Logger\LogMessageInterface[] List of log messages 
+     * @var \JoeBengalen\Logger\MessageInterface[] List of messages 
      */
-    protected $logMessages = [];
+    protected $messages = [];
     
     /**
-     * Add a log message
+     * Add a message
      * 
-     * @param \JoeBengalen\Logger\LogMessageInterface $logMessage Log message
+     * @param \JoeBengalen\Logger\MessageInterface $message Log message
      */
-    public function addLogMessage(LogMessageInterface $logMessage)
+    public function addMessage(MessageInterface $message)
     {
-        $this->logMessages[] = $logMessage;
+        $this->messages[] = $message;
     }
     
     /**
-     * Get all log messages
+     * Get all messages
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages
      */
-    public function getAllLogMessages()
+    public function getAllMessages()
     {
-        return $this->logMessages;
+        return $this->messages;
     }
     
     /**
-     * Get emergency log messages
+     * Get emergency messages
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level emergency
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages with level emergency
      */
-    public function getEmergencyLogMessages()
+    public function getEmergencyMessages()
     {
-        return $this->filterLogMessagesByLevel(LogLevel::EMERGENCY);
+        return $this->filterMessagesByLevel(LogLevel::EMERGENCY);
     }
     
     /**
-     * Get alert log messages
+     * Get alert messages
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level alert
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages with level alert
      */
-    public function getAlertLogMessages()
+    public function getAlertMessages()
     {
-        return $this->filterLogMessagesByLevel(LogLevel::ALERT);
+        return $this->filterMessagesByLevel(LogLevel::ALERT);
     }
     
     /**
-     * Get critical log messages
+     * Get critical messages
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level critical
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages with level critical
      */
-    public function getCriticalLogMessages()
+    public function getCriticalMessages()
     {
-        return $this->filterLogMessagesByLevel(LogLevel::CRITICAL);
+        return $this->filterMessagesByLevel(LogLevel::CRITICAL);
     }
     
     /**
-     * Get error log messages
+     * Get error messages
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level error
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages with level error
      */
-    public function getErrorLogMessages()
+    public function getErrorMessages()
     {
-        return $this->filterLogMessagesByLevel(LogLevel::ERROR);
+        return $this->filterMessagesByLevel(LogLevel::ERROR);
     }
     
     /**
-     * Get warning log messages
+     * Get warning messages
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level warning
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages with level warning
      */
-    public function getWarningLogMessages()
+    public function getWarningMessages()
     {
-        return $this->filterLogMessagesByLevel(LogLevel::WARNING);
+        return $this->filterMessagesByLevel(LogLevel::WARNING);
     }
     
     /**
-     * Get notice log messages
+     * Get notice messages
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level notice
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages with level notice
      */
-    public function getNoticeLogMessages()
+    public function getNoticeMessages()
     {
-        return $this->filterLogMessagesByLevel(LogLevel::NOTICE);
+        return $this->filterMessagesByLevel(LogLevel::NOTICE);
     }
     
     /**
-     * Get info log messages
+     * Get info messages
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level info
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages with level info
      */
-    public function getInfoLogMessages()
+    public function getInfoMessages()
     {
-        return $this->filterLogMessagesByLevel(LogLevel::INFO);
+        return $this->filterMessagesByLevel(LogLevel::INFO);
     }
     
     /**
-     * Get debug log messages
+     * Get debug messages
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with level debug
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages with level debug
      */
-    public function getDebugLogMessages()
+    public function getDebugMessages()
     {
-        return $this->filterLogMessagesByLevel(LogLevel::DEBUG);
+        return $this->filterMessagesByLevel(LogLevel::DEBUG);
     }
     
     /**
-     * Get log messages of a certain level
+     * Get messages of a certain level
      * 
      * @param mixed $level Log level defined in \Psr\Log\LogLevel
      * 
-     * @return \JoeBengalen\Logger\LogMessageInterface[] All log messages with the given level
+     * @return \JoeBengalen\Logger\MessageInterface[] All messages with the given level
      */
-    protected function filterLogMessagesByLevel($level)
+    protected function filterMessagesByLevel($level)
     {
-        return array_values(array_filter($this->logMessages, function($logMessage) use ($level) {
-            return $logMessage->getLevel() === $level;
+        return array_values(array_filter($this->messages, function($message) use ($level) {
+            return $message->getLevel() === $level;
         }));
     }
 }

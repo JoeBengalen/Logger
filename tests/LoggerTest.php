@@ -2,37 +2,37 @@
 namespace JoeBengalen\Logger\Test;
 
 use JoeBengalen\Logger;
-use JoeBengalen\Logger\LogMessageInterface;
+use JoeBengalen\Logger\MessageInterface;
 use JoeBengalen\Logger\CollectionInterface;
 use Psr\Log\LogLevel;
 
-function namedFunction(LogMessageInterface $logMessage) {
-    echo $logMessage->getMessage();
+function namedFunction(MessageInterface $message) {
+    echo $message->getMessage();
 }
 
 class DummyHandler
 {
-    public static function staticEchoMessage(LogMessageInterface $logMessage)
+    public static function staticEchoMessage(MessageInterface $message)
     {
-        echo $logMessage->getMessage();
+        echo $message->getMessage();
     }
     
-    public static function staticEchoLevelMessage(LogMessageInterface $logMessage)
+    public static function staticEchoLevelMessage(MessageInterface $message)
     {
-        echo "{$logMessage->getLevel()}::{$logMessage->getMessage()}";
+        echo "{$message->getLevel()}::{$message->getMessage()}";
     }
 
-    public function echoMessage(LogMessageInterface $logMessage)
+    public function echoMessage(MessageInterface $message)
     {
-        echo $logMessage->getMessage();
+        echo $message->getMessage();
     }
 }
 
 class InvokableObject
 {
-    public function __invoke(LogMessageInterface $logMessage)
+    public function __invoke(MessageInterface $message)
     {
-        echo $logMessage->getMessage();
+        echo $message->getMessage();
     }
 }
 
@@ -47,11 +47,11 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testAnonymousHandler()
     {
-        $expectedResult = 'log message';
+        $expectedResult = 'message';
 
         $logger = new Logger\Logger([
-            function (LogMessageInterface $logMessage) {
-                echo $logMessage->getMessage();
+            function (MessageInterface $message) {
+                echo $message->getMessage();
             }
         ]);
 
@@ -62,7 +62,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testNamedFunctionHandler()
     {
-        $expectedResult = 'log message';
+        $expectedResult = 'message';
 
         $logger = new Logger\Logger(['\JoeBengalen\Logger\Test\namedFunction']);
 
@@ -73,7 +73,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testStaticMethodHandler()
     {
-        $expectedResult = 'log message';
+        $expectedResult = 'message';
 
         $logger = new Logger\Logger([
             ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoMessage']
@@ -86,7 +86,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testObjectMethodHandler()
     {
-        $expectedResult = 'log message';
+        $expectedResult = 'message';
 
         $logger = new Logger\Logger([
             [new \JoeBengalen\Logger\Test\DummyHandler, 'echoMessage']
@@ -99,7 +99,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testInvokableObjectHandler()
     {
-        $expectedResult = 'log message';
+        $expectedResult = 'message';
 
         $logger = new Logger\Logger([
             new InvokableObject()
@@ -170,7 +170,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testLogLevelDebug()
     {
-        $message = 'log message';
+        $message = 'message';
         $expectedResult = LogLevel::DEBUG. '::' . $message;
 
         $logger = new Logger\Logger([
@@ -184,7 +184,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testLogLevelInfo()
     {
-        $message = 'log message';
+        $message = 'message';
         $expectedResult = LogLevel::INFO. '::' . $message;
 
         $logger = new Logger\Logger([
@@ -198,7 +198,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testLogLevelNotice()
     {
-        $message = 'log message';
+        $message = 'message';
         $expectedResult = LogLevel::NOTICE. '::' . $message;
 
         $logger = new Logger\Logger([
@@ -212,7 +212,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testLogLevelAlert()
     {
-        $message = 'log message';
+        $message = 'message';
         $expectedResult = LogLevel::ALERT. '::' . $message;
 
         $logger = new Logger\Logger([
@@ -226,7 +226,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testLogLevelWarning()
     {
-        $message = 'log message';
+        $message = 'message';
         $expectedResult = LogLevel::WARNING. '::' . $message;
 
         $logger = new Logger\Logger([
@@ -240,7 +240,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testLogLevelError()
     {
-        $message = 'log message';
+        $message = 'message';
         $expectedResult = LogLevel::ERROR. '::' . $message;
 
         $logger = new Logger\Logger([
@@ -254,7 +254,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testLogLevelCritical()
     {
-        $message = 'log message';
+        $message = 'message';
         $expectedResult = LogLevel::CRITICAL. '::' . $message;
 
         $logger = new Logger\Logger([
@@ -268,7 +268,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testLogLevelEmergency()
     {
-        $message = 'log message';
+        $message = 'message';
         $expectedResult = LogLevel::EMERGENCY. '::' . $message;
 
         $logger = new Logger\Logger([
@@ -282,7 +282,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testInvalidLogLevelException()
     {
-        $message = 'log message';
+        $message = 'message';
         
         $logger = new Logger\Logger([
             ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
@@ -293,40 +293,40 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $logger->log('invalid', $message);
     }
 
-    public function testLogCustomLogMessageFactory()
+    public function testLogCustomMessageFactory()
     {
         $phrase = 'custom_log_message_factory_called';
         
         $logger = new Logger\Logger([], [
-            'log.message.factory' => function () use ($phrase) {
+            'message.factory' => function () use ($phrase) {
                 echo $phrase;
-                return $this->getMock('\JoeBengalen\Logger\LogMessageInterface');
+                return $this->getMock('\JoeBengalen\Logger\MessageInterface');
             }
         ]);
         
         // make sure the factory is called
         $logger->debug('debug message');
         
-        // check if the original logMessage aquals the one set by the handler
+        // check if the original message aquals the one set by the handler
         $this->expectOutputString($phrase);
         
     }
 
-    public function testLogCustomLogMessageFactoryNonCallable()
+    public function testLogCustomMessageFactoryNonCallable()
     {
         $this->setExpectedException('\InvalidArgumentException');
         
         new Logger\Logger([], [
-            'log.message.factory' => null
+            'message.factory' => null
         ]);
     }
 
-    public function testLogCustomLogMessageFactoryNoLogMessageReturned()
+    public function testLogCustomMessageFactoryNoMessageReturned()
     {
         $this->setExpectedException('\RuntimeException');
         
         $logger = new Logger\Logger([], [
-            'log.message.factory' => function () {
+            'message.factory' => function () {
                 return null;
             }
         ]);

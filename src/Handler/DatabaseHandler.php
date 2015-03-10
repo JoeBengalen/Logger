@@ -9,7 +9,7 @@
  */
 namespace JoeBengalen\Logger\Handler;
 
-use \JoeBengalen\Logger\LogMessageInterface;
+use \JoeBengalen\Logger\MessageInterface;
 
 /**
  * Database log handler
@@ -64,13 +64,13 @@ class DatabaseHandler extends AbstractHandler
     /**
      * Log a message
      * 
-     * @param LogMessageInterface $logMessage LogMessageInterface instance
+     * @param MessageInterface $message MessageInterface instance
      */
-    public function __invoke(LogMessageInterface $logMessage)
+    public function __invoke(MessageInterface $message)
     {
-        $interpolatedMessage = $this->interpolate($logMessage->getMessage(), $logMessage->getContext());
+        $interpolatedMessage = $this->interpolate($message->getMessage(), $message->getContext());
         
-        $context = $logMessage->getContext();
+        $context = $message->getContext();
         
         // Check for a \Exception in the context
         if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
@@ -82,7 +82,7 @@ class DatabaseHandler extends AbstractHandler
         $sth = $this->connection->prepare($sql);
         
         $sth->execute([
-            $logMessage->getLevel(),
+            $message->getLevel(),
             $interpolatedMessage,
             json_encode($context)
         ]);

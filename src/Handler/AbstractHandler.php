@@ -9,7 +9,7 @@
  */
 namespace JoeBengalen\Logger\Handler;
 
-use \JoeBengalen\Logger\LogMessageInterface;
+use \JoeBengalen\Logger\MessageInterface;
 
 /**
  * Abstract log handler
@@ -41,7 +41,7 @@ abstract class AbstractHandler
     /**
      * Log a message
      * 
-     * @param LogMessageInterface $logMessage LogMessageInterface instance
+     * @param MessageInterface $message MessageInterface instance
      */
-    abstract public function __invoke(LogMessageInterface $logMessage);
+    abstract public function __invoke(MessageInterface $message);
 }
