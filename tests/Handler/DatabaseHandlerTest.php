@@ -5,9 +5,8 @@ use Psr\Log\LogLevel;
 
 class PdoMock extends \PDO
 {
-    public function __construct()
+    public function __construct($dsn = null, $username = null, $passwd = null, $options = null)
     {
-        //parent::__construct($dsn, $username, $passwd, $options);
     }
     
     public function prepare($statement, array $driver_options = [])
