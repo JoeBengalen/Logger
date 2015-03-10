@@ -77,8 +77,6 @@ class Logger implements LoggerInterface
             }
         }
         
-        $this->handlers = $handlers;
-        
         // merge default options with the given options
         $this->options = array_merge([
             // LogMessageInterface factory callable
@@ -97,23 +95,13 @@ class Logger implements LoggerInterface
             throw new \InvalidArgumentException("Option 'log.message.factory' must contain a callable");
         }
         
-        // try to initialize the collection if the collection.factory is not null
-        if (!is_null($this->options['collection.factory'])) {
-            // check if option collection.factory is a callable
-            if (!is_callable($this->options['collection.factory'])) {
-                throw new \InvalidArgumentException("Option 'collection.factory' must contain a callable or be null");
-            }
-            
-            // call the collection.factory
-            $collection = call_user_func($this->options['collection.factory']);
-            
-            // check if the factory returned an instance of \JoeBengalen\JBLogger\CollectionInterface
-            if (!$collection instanceof CollectionInterface) {
-                throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\JBLogger\CollectionInterface");
-            }
-            
-            $this->collection = $collection;
+        // check if option collection.factory is null or a callable
+        if (!is_null($this->options['collection.factory']) && !is_callable($this->options['collection.factory'])) {
+            throw new \InvalidArgumentException("Option 'collection.factory' must contain a callable or be null");
         }
+        
+        $this->handlers   = $handlers;
+        $this->collection = $this->createCollection();
     }
 
     /**
@@ -128,23 +116,13 @@ class Logger implements LoggerInterface
      */
     public function log($level, $message, array $context = [])
     {
-        // create a LogMessageInterface instance with the registered log.message.factory callable
-        $logMessage = call_user_func_array($this->options['log.message.factory'], [$level, $message, $context]);
+        $logMessage = $this->createLogMessage($level, $message, $context);        
         
-        // check if the factory returned an instance of \JoeBengalen\JBLogger\LogMessageInterface
-        if (!$logMessage instanceof LogMessageInterface) {
-            throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\JBLogger\LogMessageInterface");
-        }
-        
-        // add log message to collection if collection is set
         if (!is_null($this->collection)) {
             $this->collection->addLogMessage($logMessage);
         }
         
-        // call each handler
-        foreach ($this->handlers as $handler) {
-            call_user_func($handler, $logMessage);
-        }
+        $this->callHandlers($logMessage);
     }
     
     /**
@@ -155,5 +133,59 @@ class Logger implements LoggerInterface
     public function getCollection()
     {
         return $this->collection;
+    }
+    
+    /**
+     * Call each handler
+     * 
+     * @param \JoeBengalen\JBLogger\LogMessageInterface $logMessage
+     */
+    protected function callHandlers(LogMessageInterface $logMessage)
+    {
+        foreach ($this->handlers as $handler) {
+            call_user_func($handler, $logMessage);
+        }
+    }
+    
+    /**
+     * Create a new log message
+     * 
+     * @param mixed     $level      Log level. Must be defined in \Psr\Log\LogLevel.
+     * @param string    $message    Message to log
+     * @param array     $context    Context values sent along with the message
+     * 
+     * @return \JoeBengalen\JBLogger\LogMessageInterface
+     * 
+     * @throws \RuntimeException    If callable option 'log.message.factory' does not return an instance of \JoeBengalen\JBLogger\LogMessageInterface
+     */
+    protected function createLogMessage($level, $message, array $context)
+    {
+        $logMessage = call_user_func_array($this->options['log.message.factory'], [$level, $message, $context]);
+        
+        if (!$logMessage instanceof LogMessageInterface) {
+            throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\JBLogger\LogMessageInterface");
+        }
+        
+        return $logMessage;
+    }
+    
+    /**
+     * Create a new collection
+     * 
+     * @return \JoeBengalen\JBLogger\CollectionInterface|null
+     * 
+     * @throws \RuntimeException If callable option collection.factory does not return an instance of \JoeBengalen\JBLogger\CollectionInterface
+     */
+    protected function createCollection()
+    {
+        if (!is_null($this->options['collection.factory'])) {
+            $collection = call_user_func($this->options['collection.factory']);
+            
+            if (!$collection instanceof CollectionInterface) {
+                throw new \RuntimeException("Option 'log.message.factory' callable must return an instance of \JoeBengalen\JBLogger\CollectionInterface");
+            }
+            
+            return $collection;
+        }
     }
 }
