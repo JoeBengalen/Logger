@@ -1,14 +1,14 @@
 <?php
-namespace JoeBengalen\JBLogger\Test;
+namespace JoeBengalen\Logger\Test;
 
-use JoeBengalen\JBLogger\Collection;
+use JoeBengalen\Logger\Collection;
 use Psr\Log\LogLevel;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {
-    protected function getLogMessageInstance($level = null)
+    protected function getMessageInstance($level = null)
     {
-        $mock = $this->getMock('\JoeBengalen\JBLogger\LogMessageInterface');
+        $mock = $this->getMock('\JoeBengalen\Logger\MessageInterface');
         $mock->method('getLevel')->willReturn($level);
         return $mock;
     }
@@ -18,117 +18,117 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->collection = new Collection();
     }
 
-    public function testAddLogMessage()
+    public function testAddMessage()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance());
+        $this->collection->addMessage($this->getMessageInstance());
     }
    /* TODO : Look how to solve this, code below raises an error in travis!
-    public function testAddInvalidLogMessageInterface()
+    public function testAddInvalidMessageInterface()
     {
         $this->setExpectedException('PHPUnit_Framework_Error'); // thrown if a PHP error occurs
-        $this->collection->addLogMessage('invalid');
+        $this->collection->addMessage('invalid');
     }
     */
-    public function testGetAllLogMessages()
+    public function testGetAllMessages()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::EMERGENCY));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::INFO));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::EMERGENCY));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collection->getAllLogMessages());
+        $result = count($this->collection->getAllMessages());
 
         $this->assertEquals(2, $result);
     }
 
-    public function testGetEmergencyLogMessages()
+    public function testGetEmergencyMessages()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::EMERGENCY));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::INFO));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::EMERGENCY));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collection->getEmergencyLogMessages());
+        $result = count($this->collection->getEmergencyMessages());
 
         $this->assertEquals(1, $result);
     }
 
-    public function testGeAlertLogMessages()
+    public function testGeAlertMessages()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::INFO));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collection->getAlertLogMessages());
+        $result = count($this->collection->getAlertMessages());
 
         $this->assertEquals(3, $result);
     }
 
-    public function testGetCriticalLogMessages()
+    public function testGetCriticalMessages()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::CRITICAL));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::CRITICAL));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::CRITICAL));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::CRITICAL));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::CRITICAL));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::CRITICAL));
 
-        $result = count($this->collection->getCriticalLogMessages());
+        $result = count($this->collection->getCriticalMessages());
 
         $this->assertEquals(3, $result);
     }
 
-    public function testGetErrorLogMessages()
+    public function testGetErrorMessages()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ERROR));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ERROR));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::INFO));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ERROR));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ERROR));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collection->getErrorLogMessages());
+        $result = count($this->collection->getErrorMessages());
 
         $this->assertEquals(2, $result);
     }
 
-    public function testGetWarningLogMessages()
+    public function testGetWarningMessages()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::WARNING));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::WARNING));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
 
-        $result = count($this->collection->getWarningLogMessages());
+        $result = count($this->collection->getWarningMessages());
 
         $this->assertEquals(1, $result);
     }
 
-    public function testGetNoticeLogMessages()
+    public function testGetNoticeMessages()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::NOTICE));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ERROR));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::NOTICE));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::NOTICE));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ERROR));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::NOTICE));
 
-        $result = count($this->collection->getNoticeLogMessages());
+        $result = count($this->collection->getNoticeMessages());
 
         $this->assertEquals(2, $result);
     }
 
-    public function testGetInfoLogMessages()
+    public function testGetInfoMessages()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::ALERT));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::INFO));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::ALERT));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collection->getInfoLogMessages());
+        $result = count($this->collection->getInfoMessages());
 
         $this->assertEquals(1, $result);
     }
 
-    public function testGetDebugLogMessages()
+    public function testGetDebugMessages()
     {
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::DEBUG));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::DEBUG));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::DEBUG));
-        $this->collection->addLogMessage($this->getLogMessageInstance(LogLevel::INFO));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::DEBUG));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::DEBUG));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::DEBUG));
+        $this->collection->addMessage($this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collection->getDebugLogMessages());
+        $result = count($this->collection->getDebugMessages());
 
         $this->assertEquals(3, $result);
     }

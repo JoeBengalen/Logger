@@ -1,5 +1,5 @@
 # Logger
-[![Build Status](https://travis-ci.org/JoeBengalen/JBLogger.svg?branch=master)](https://travis-ci.org/JoeBengalen/JBLogger)
+[![Build Status](https://travis-ci.org/JoeBengalen/Logger.svg?branch=develop)](https://travis-ci.org/JoeBengalen/Logger)
 
 Lightweight [psr-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md) logger library.
 
@@ -38,9 +38,9 @@ $logger->debug('debug message');            // Detailed debug information.
 
 #### Context
 
-Along with a log message also a second argument can be passed. This *context* is an array which could contain anything.
+Along with a message also a second argument can be passed. This *context* is an array which could contain anything.
 
-The ```$context``` can be used to replace placeholders in the log message.
+The ```$context``` can be used to replace placeholders in the message.
 ```php
 $logger->info('User {username} created.', ['username' => 'John Doe']);
 // -> User John Doe created.
@@ -51,14 +51,14 @@ The context has a special key *exception* which could be used to pass an ```\Exc
 $logger->critical("Unexpected Exception occurred.", ['exception' => new \Exception('Something went horribly wrong :(')]);
 ```
 
-Aside from the named functionality the context array can be used to pass any data that may be useful for the log message.
+Aside from the named functionality the context array can be used to pass any data that may be useful for the message.
 
 ### Handlers
 
 Handers are callables registered to the logger. It is up to the user which handler(s) to register. **Note** that there is no default handler. So if none is registered nothing happens. The registered handlers will be called in the order they are given.
 
 #### Shipped handlers
-All shipped handlers process *every* log message. There if no filter based on the log level.
+All shipped handlers process *every* message. There if no filter based on the log level.
 
 ##### FileHandler
 The ```FileHandler``` is given a file in its initialization and logs all messages into that file.
@@ -80,22 +80,22 @@ $logger = new Logger([
 
 #### Custom handlers
 
-A handler is, simply put, a callable, which is given an instance of ```JoeBengalen\Logger\LogMessageInterface```.
+A handler is, simply put, a callable, which is given an instance of ```JoeBengalen\Logger\MessageInterface```.
 ```php
-function (\JoeBengalen\Logger\LogMessageInterface $logMessage) { }
+function (\JoeBengalen\Logger\MessageInterface $message) { }
 ```
 
 All shipped handlers are invokable objects, but a handler could as well be an anonymous function, a static class method or any other valid [callable](http://php.net/manual/en/language.types.callable.php).
 
 ```php
-use JoeBengalen\Logger\LogMessageInterface;
+use JoeBengalen\Logger\MessageInterface;
 use Psr\Log\LogLevel;
 
 $logger = new Logger([
     
     // anonymous function
-    function (LogMessageInterface $logMessage) {
-        if ($logMessage->getLevel() === LogLevel::EMERGENCY) {
+    function (MessageInterface $message) {
+        if ($message->getLevel() === LogLevel::EMERGENCY) {
             // send an email
         }
     },
@@ -107,22 +107,22 @@ $logger = new Logger([
 
 **Note** that it is up to the handler to handle the _context_ array properly. (For example, replacing placeholders in the message and recognizing an ```\Exception```)
 
-#### Custom LogMessageInterface factory
-The factory to create a LogMessageInterface instance is another callable, registered as $option ```log.message.factory```. This factory is given three arguments. The ```$level```, ```$message``` and ```array $context``` and should return an instance that implements the ```JoeBengalen\Logger\LogMessageInterface```. Apart from that the factory is completely free to return any object (as long as it implements the right interface) it wants and format the given arguments as it pleases.
+#### Custom MessageInterface factory
+The factory to create a MessageInterface instance is another callable, registered as $option ```message.factory```. This factory is given three arguments. The ```$level```, ```$message``` and ```array $context``` and should return an instance that implements the ```JoeBengalen\Logger\MessageInterface```. Apart from that the factory is completely free to return any object (as long as it implements the right interface) it wants and format the given arguments as it pleases.
 
-By default an instance of ```LogMessage``` is returned.
+By default an instance of ```Message``` is returned.
 
 ```php
 use JoeBengalen\Logger\Logger;
-use JoeBengalen\Logger\LogMessage;
+use JoeBengalen\Logger\Message;
 
 $logger = new Logger([
     // handlers
 ], [
 
-    // LogMessageInterface factory
-    'log.message.factory' => function($level, $message, $context) {
-        return new LogMessage($level, $message, $context);
+    // MessageInterface factory
+    'message.factory' => function($level, $message, $context) {
+        return new Message($level, $message, $context);
     }
 
 ]);

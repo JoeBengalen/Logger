@@ -1,14 +1,14 @@
 <?php
-namespace JoeBengalen\JBLogger\Test\Handler;
+namespace JoeBengalen\Logger\Test\Handler;
 
-use JoeBengalen\JBLogger\LogMessageInterface;
-use JoeBengalen\JBLogger\Handler\AbstractHandler;
+use JoeBengalen\Logger\MessageInterface;
+use JoeBengalen\Logger\Handler\AbstractHandler;
 
 class InvokableHandler extends AbstractHandler
 {
-    public function __invoke(LogMessageInterface $logMessage)
+    public function __invoke(MessageInterface $message)
     {
-        return $this->interpolate($logMessage->getMessage(), $logMessage->getContext());
+        return $this->interpolate($message->getMessage(), $message->getContext());
     }
 }
 

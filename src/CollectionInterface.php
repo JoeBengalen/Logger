@@ -1,27 +1,27 @@
 <?php
 /**
- * JoeBengalen Logger library
- * 
+ * JoeBengalen Logger library.
+ *
  * @author      Martijn Wennink <joebengalen@gmail.com>
  * @copyright   Copyright (c) 2015 Martijn Wennink
- * @license     https://github.com/JoeBengalen/JBLogger/blob/master/LICENSE.md (MIT License)
+ * @license     https://github.com/JoeBengalen/Logger/blob/master/LICENSE.md (MIT License)
+ *
  * @version     0.1.0
  */
-namespace JoeBengalen\JBLogger;
 
-use JoeBengalen\JBLogger\LogMessageInterface;
+namespace JoeBengalen\Logger;
 
 /**
- * Log Message Interface
- * 
- * Defines a log message collection
+ * Message Interface.
+ *
+ * Defines a message collection
  */
 interface CollectionInterface
 {
     /**
-     * Add a log message
-     * 
-     * @param \JoeBengalen\JBLogger\LogMessageInterface $logMessage LogMessageInterface instance
+     * Add a message.
+     *
+     * @param \JoeBengalen\Logger\MessageInterface $message MessageInterface instance
      */
-    public function addLogMessage(LogMessageInterface $logMessage);
+    public function addMessage(MessageInterface $message);
 }
