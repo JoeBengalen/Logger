@@ -159,7 +159,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testNonInterfaceReturningCollectionFactory()
     {
-        $this->setExpectedException('RuntimeException');
+        $this->setExpectedException('UnexpectedValueException');
                 
         $logger = new Logger\Logger([], [
             'collection.factory' => function () {
@@ -323,7 +323,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testLogCustomMessageFactoryNoMessageReturned()
     {
-        $this->setExpectedException('\RuntimeException');
+        $this->setExpectedException('\UnexpectedValueException');
         
         $logger = new Logger\Logger([], [
             'message.factory' => function () {
