@@ -48,6 +48,7 @@ class Message implements MessageInterface
     public function __construct($level, $message, array $context = [])
     {
         // get valid log levels by reflecting the LogLevel object
+        // TODO: try not to use a reflection class
         $validLogLevels = (new \ReflectionClass(new LogLevel()))->getConstants();
 
         // check if the log level is valid

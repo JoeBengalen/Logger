@@ -121,11 +121,7 @@ class Logger implements LoggerInterface
     public function log($level, $message, array $context = [])
     {
         $messageInstance = $this->createMessage($level, $message, $context);
-
-        if (!is_null($this->collection)) {
-            $this->collection->addMessage($messageInstance);
-        }
-
+        $this->addMessageToCollection($messageInstance);
         $this->callHandlers($messageInstance);
     }
 
@@ -190,6 +186,18 @@ class Logger implements LoggerInterface
             }
 
             return $collection;
+        }
+    }
+
+    /**
+     * Add message to collection if collection is set.
+     * 
+     * @param \JoeBengalen\Logger\MessageInterface $message
+     */
+    protected function addMessageToCollection(MessageInterface $message)
+    {
+        if (!is_null($this->collection)) {
+            $this->collection->addMessage($message);
         }
     }
 }
