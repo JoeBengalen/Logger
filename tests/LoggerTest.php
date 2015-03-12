@@ -49,11 +49,10 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $expectedResult = 'message';
 
-        $logger = new Logger\Logger([
-            function (MessageInterface $message) {
-                echo $message->getMessage();
-            }
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(function (MessageInterface $message) {
+            echo $message->getMessage();
+        });
 
         $logger->info($expectedResult);
 
@@ -63,8 +62,9 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     public function testNamedFunctionHandler()
     {
         $expectedResult = 'message';
-
-        $logger = new Logger\Logger(['\JoeBengalen\Logger\Test\namedFunction']);
+        
+        $logger = new Logger\Logger();
+        $logger->add('\JoeBengalen\Logger\Test\namedFunction');
 
         $logger->info($expectedResult);
 
@@ -75,9 +75,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $expectedResult = 'message';
 
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoMessage']
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoMessage']);
 
         $logger->info($expectedResult);
 
@@ -87,10 +86,9 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     public function testObjectMethodHandler()
     {
         $expectedResult = 'message';
-
-        $logger = new Logger\Logger([
-            [new \JoeBengalen\Logger\Test\DummyHandler, 'echoMessage']
-        ]);
+        
+        $logger = new Logger\Logger();
+        $logger->add([new \JoeBengalen\Logger\Test\DummyHandler, 'echoMessage']);
 
         $logger->info($expectedResult);
 
@@ -100,23 +98,13 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     public function testInvokableObjectHandler()
     {
         $expectedResult = 'message';
-
-        $logger = new Logger\Logger([
-            new InvokableObject()
-        ]);
+        
+        $logger = new Logger\Logger();
+        $logger->add(new InvokableObject());
 
         $logger->info($expectedResult);
 
         $this->expectOutputString($expectedResult);
-    }
-    
-    public function testNonCallableHandlerException()
-    {
-        $this->setExpectedException('\InvalidArgumentException');
-        
-        $logger = new Logger\Logger([
-            'nonExistingHandler'
-        ]);
     }
     
     public function testDefaultCollection()
@@ -130,7 +118,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $mock = $this->getMock('\JoeBengalen\Logger\CollectionInterface');
 
-        $logger = new Logger\Logger([], [
+        $logger = new Logger\Logger([
             'collection.factory' => function() use ($mock) {
                 return $mock;
             }
@@ -141,7 +129,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     
     public function testNoCollection()
     {
-        $logger = new Logger\Logger([], [
+        $logger = new Logger\Logger([
             'collection.factory' => null
         ]);
 
@@ -152,7 +140,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException');
                 
-        $logger = new Logger\Logger([], [
+        $logger = new Logger\Logger([
             'collection.factory' => false
         ]);
     }
@@ -161,7 +149,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('UnexpectedValueException');
                 
-        $logger = new Logger\Logger([], [
+        $logger = new Logger\Logger([
             'collection.factory' => function () {
                 return 'invalid';
             }
@@ -172,10 +160,9 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $message = 'message';
         $expectedResult = LogLevel::DEBUG. '::' . $message;
-
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
-        ]);
+        
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']);
 
         $logger->debug($message);
 
@@ -187,9 +174,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $message = 'message';
         $expectedResult = LogLevel::INFO. '::' . $message;
 
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']);
 
         $logger->info($message);
 
@@ -201,9 +187,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $message = 'message';
         $expectedResult = LogLevel::NOTICE. '::' . $message;
 
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']);
 
         $logger->notice($message);
 
@@ -215,9 +200,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $message = 'message';
         $expectedResult = LogLevel::ALERT. '::' . $message;
 
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']);
 
         $logger->alert($message);
 
@@ -229,9 +213,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $message = 'message';
         $expectedResult = LogLevel::WARNING. '::' . $message;
 
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']);
 
         $logger->warning($message);
 
@@ -243,9 +226,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $message = 'message';
         $expectedResult = LogLevel::ERROR. '::' . $message;
 
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']);
 
         $logger->error($message);
 
@@ -257,9 +239,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $message = 'message';
         $expectedResult = LogLevel::CRITICAL. '::' . $message;
 
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']);
 
         $logger->critical($message);
 
@@ -271,9 +252,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $message = 'message';
         $expectedResult = LogLevel::EMERGENCY. '::' . $message;
 
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']);
 
         $logger->emergency($message);
 
@@ -284,9 +264,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $message = 'message';
         
-        $logger = new Logger\Logger([
-            ['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']
-        ]);
+        $logger = new Logger\Logger();
+        $logger->add(['\JoeBengalen\Logger\Test\DummyHandler', 'staticEchoLevelMessage']);
         
         $this->setExpectedException('\Psr\Log\InvalidArgumentException');
 
@@ -297,7 +276,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $phrase = 'custom_log_message_factory_called';
         
-        $logger = new Logger\Logger([], [
+        $logger = new Logger\Logger([
             'message.factory' => function () use ($phrase) {
                 echo $phrase;
                 return $this->getMock('\JoeBengalen\Logger\MessageInterface');
@@ -316,7 +295,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\InvalidArgumentException');
         
-        new Logger\Logger([], [
+        new Logger\Logger([
             'message.factory' => null
         ]);
     }
@@ -325,7 +304,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\UnexpectedValueException');
         
-        $logger = new Logger\Logger([], [
+        $logger = new Logger\Logger([
             'message.factory' => function () {
                 return null;
             }

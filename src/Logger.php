@@ -53,11 +53,10 @@ class Logger implements LoggerInterface
     protected $collection;
 
     /**
-     * Create a logger instance and register handlers.
+     * Create a logger service.
      *
-     * @param callable[] $handlers (optional)    List of callable handlers
-     * @param array      $options  (optional)     {
-     *      @var callable $message.factory          Alternative MessageInterface factory.
+     * @param array $options (optional)     {
+     *      @var callable      $message.factory     Alternative MessageInterface factory.
      *                                              Callable arguments: mixed $level, string $message, array $context
      *                                              Callable MUST return an instance of MessageInterface.
      *      @var callable|null $collection.factory  Alternative CollectionInterface factory.
@@ -65,20 +64,12 @@ class Logger implements LoggerInterface
      *                                              Null means no collection will be used.
      * }
      *
-     * @throws \InvalidArgumentException If any handler is not callable
      * @throws \InvalidArgumentException If option message.factory is not a callable
      * @throws \InvalidArgumentException If option collection.factory is not a callable or null
      * @throws \UnexpectedValueException If callable option collection.factory does not return an instance of \JoeBengalen\Logger\CollectionInterface
      */
-    public function __construct(array $handlers = [], array $options = [])
+    public function __construct(array $options = [])
     {
-        // check if each handler is callable
-        foreach ($handlers as $handler) {
-            if (!is_callable($handler)) {
-                throw new \InvalidArgumentException("Handler must be callable");
-            }
-        }
-
         // merge default options with the given options
         $this->options = array_merge([
             
@@ -104,14 +95,29 @@ class Logger implements LoggerInterface
             throw new \InvalidArgumentException("Option 'collection.factory' must contain a callable or be null");
         }
 
-        $this->handlers   = $handlers;
         $this->collection = $this->createCollection();
+    }
+    
+    /**
+     * Register a message handler.
+     * 
+     * The handler is passed a \JoeBengalen\Logger\MessageInterface.
+     * 
+     * @param callable $handler
+     * 
+     * @return \JoeBengalen\Logger\Logger
+     */
+    public function add(callable $handler)
+    {
+        $this->handlers[] = $handler;
+        
+        return $this;
     }
 
     /**
-     * Calls each registered handler.
+     * Log a message.
      *
-     * @param mixed  $level   Log level. Must be defined in \Psr\Log\LogLevel.
+     * @param mixed  $level   Log level defined in \Psr\Log\LogLevel.
      * @param string $message Message to log
      * @param array  $context Context values sent along with the message
      *
@@ -172,7 +178,7 @@ class Logger implements LoggerInterface
     /**
      * Create a new collection.
      *
-     * @return \JoeBengalen\Logger\CollectionInterface|null
+     * @return \JoeBengalen\Logger\CollectionInterface|null Collection instance or null if no collection.factory was set
      *
      * @throws \UnexpectedValueException If callable option collection.factory does not return an instance of \JoeBengalen\Logger\CollectionInterface
      */

@@ -12,20 +12,20 @@ date_default_timezone_set('Europe/Amsterdam');
 
 require_once 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-$logFile = __DIR__ . DIRECTORY_SEPARATOR . 'default.log';
+$logFile    = __DIR__ . DIRECTORY_SEPARATOR . 'default.log';
 $sqliteFile = __DIR__ . DIRECTORY_SEPARATOR . 'logging.sqlite';
 
-$logger = new Logger\Logger([
-    new Logger\Handler\FileHandler($logFile),    
-    //new Logger\Handler\DatabaseHandler(new PDO("sqlite:{$sqliteFile}", null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION])),
-    
-    // custom handler only showing debug messages
-    function (MessageInterface $message) {
-        if ($message->getLevel() == LogLevel::DEBUG) {
-            echo "Debugging: {$message->getMessage()}\n";
-        }
-    }
-]);
+$logger = (new Logger\Logger())
+        ->add(new Logger\Handler\FileHandler($logFile))
+        
+        //->add(new Logger\Handler\DatabaseHandler(new PDO("sqlite:{$sqliteFile}", null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION])))
+
+        // custom handler only showing debug messages
+        ->add(function (MessageInterface $message) {
+            if ($message->getLevel() == LogLevel::DEBUG) {
+                echo "Debugging: {$message->getMessage()}\n";
+            }
+        });
 
 $logger->debug('Some debug information ...');
 $logger->info("User '{username}' created.", array('username' => 'JoeBengalen', 'extra' => true));
