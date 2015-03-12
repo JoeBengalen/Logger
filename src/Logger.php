@@ -40,7 +40,7 @@ class Logger implements LoggerInterface
      *                                              Null means no collection will be used.
      * }
      */
-    protected $options;
+    protected $options = [];
 
     /**
      * @var callable[] Log handlers
@@ -51,36 +51,18 @@ class Logger implements LoggerInterface
      * @var \JoeBengalen\Logger\CollectionInterface Log message collector
      */
     protected $collection;
+    
+    /**
+     * @var boolean $locked Indicator whether the object is locked or not 
+     */
+    protected $locked = false;
 
     /**
-     * Create a logger instance and register handlers.
-     *
-     * @param callable[] $handlers (optional)    List of callable handlers
-     * @param array      $options  (optional)     {
-     *      @var callable $message.factory          Alternative MessageInterface factory.
-     *                                              Callable arguments: mixed $level, string $message, array $context
-     *                                              Callable MUST return an instance of MessageInterface.
-     *      @var callable|null $collection.factory  Alternative CollectionInterface factory.
-     *                                              Callable MUST return an instance of CollectionInterface.
-     *                                              Null means no collection will be used.
-     * }
-     *
-     * @throws \InvalidArgumentException If any handler is not callable
-     * @throws \InvalidArgumentException If option message.factory is not a callable
-     * @throws \InvalidArgumentException If option collection.factory is not a callable or null
-     * @throws \RuntimeException         If callable option collection.factory does not return an instance of \JoeBengalen\Logger\CollectionInterface
+     * Create a logger
      */
-    public function __construct(array $handlers = [], array $options = [])
+    public function __construct()
     {
-        // check if each handler is callable
-        foreach ($handlers as $handler) {
-            if (!is_callable($handler)) {
-                throw new \InvalidArgumentException("Handler must be callable");
-            }
-        }
-
-        // merge default options with the given options
-        $this->options = array_merge([
+        $this->options = [
             
             // MessageInterface factory callable
             'message.factory' => function ($level, $message, $context) {
@@ -91,21 +73,65 @@ class Logger implements LoggerInterface
             'collection.factory' => function () {
                 return new Collection();
             },
-            
-        ], $options);
-
-        // check if option message.factory is a callable
-        if (!is_callable($this->options['message.factory'])) {
-            throw new \InvalidArgumentException("Option 'message.factory' must contain a callable");
+        ];
+    }
+    
+    /**
+     * Add a handler
+     * 
+     * @param callable $handler Callable handler
+     * 
+     * @return \JoeBengalen\Logger\Logger
+     */
+    public function handler(callable $handler)
+    {
+        $this->handlers[] = $handler;
+        
+        return $this;
+    }
+    
+    /**
+     * Change an option.
+     * 
+     * @param string    $key    Option to change.
+     * @param mixed     $value  New value for option.
+     * 
+     * @return \JoeBengalen\Logger\Logger
+     * 
+     * @throws \RuntimeException         If called when object is locked.
+     * @throws \InvalidArgumentException If option message.factory is not a callable.
+     * @throws \InvalidArgumentException If option collection.factory is not a callable or null.
+     */
+    public function option($key, $value)
+    {
+        if ($this->locked) {
+            throw new \RuntimeException('Cannot change an option once the logger is locked.');
         }
-
-        // check if option collection.factory is null or a callable
-        if (!is_null($this->options['collection.factory']) && !is_callable($this->options['collection.factory'])) {
-            throw new \InvalidArgumentException("Option 'collection.factory' must contain a callable or be null");
+        
+        if ($key === 'message.factory' && !is_callable($value)) {
+            throw new \InvalidArgumentException("Option 'message.factory' must contain a callable.");
         }
-
-        $this->handlers   = $handlers;
-        $this->collection = $this->createCollection();
+        
+        if ($key === 'collection.factory' && !is_null($value) && !is_callable($value)) {
+            throw new \InvalidArgumentException("Option 'collection.factory' must contain a callable or be null.");
+        }
+        
+        $this->options[$key] = $value;
+        
+        return $this;
+    }
+    
+    /**
+     * Initialize the logger.
+     * 
+     * This locks the object so from now on no option can be changed.
+     */
+    public function init()
+    {
+        if (!$this->locked) {
+            $this->collection = $this->createCollection();
+            $this->locked     = true;
+        }
     }
 
     /**
@@ -120,6 +146,10 @@ class Logger implements LoggerInterface
      */
     public function log($level, $message, array $context = [])
     {
+        if (!$this->locked) {
+            $this->init();
+        }
+        
         $messageInstance = $this->createMessage($level, $message, $context);
 
         if (!is_null($this->collection)) {
