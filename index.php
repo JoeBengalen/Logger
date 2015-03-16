@@ -15,7 +15,10 @@ require_once 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 $logFile = __DIR__ . DIRECTORY_SEPARATOR . 'default.log';
 $sqliteFile = __DIR__ . DIRECTORY_SEPARATOR . 'logging.sqlite';
 
+$collection = new Logger\Handler\CollectionHandler();
+
 $logger = new Logger\Logger([
+    $collection,
     new Logger\Handler\FileHandler($logFile),    
     //new Logger\Handler\DatabaseHandler(new PDO("sqlite:{$sqliteFile}", null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION])),
     
@@ -31,6 +34,6 @@ $logger->debug('Some debug information ...');
 $logger->info("User '{username}' created.", array('username' => 'JoeBengalen', 'extra' => true));
 $logger->critical("Unexpected Exception occurred.", ['exception' => new \Exception('Something went horribly wrong :(')]);
 
-var_dump($logger->getCollection()->getAllMessages());
+var_dump($collection->getAllMessages());
 
 
