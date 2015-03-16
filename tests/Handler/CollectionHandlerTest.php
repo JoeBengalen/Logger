@@ -22,7 +22,7 @@ class CollectionHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testInvokingHandler()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance()]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance());
     }
    /* TODO : Look how to solve this, code below raises an error in travis!
     public function testAddInvalidMessageInterface()
@@ -33,105 +33,105 @@ class CollectionHandlerTest extends \PHPUnit_Framework_TestCase
     */
     public function testGetAllMessages()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::EMERGENCY)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::INFO)]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::EMERGENCY));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collectionHandler->getAllMessages());
+        $messages = $this->collectionHandler->getAllMessages();
 
-        $this->assertEquals(2, $result);
+        $this->assertCount(2, $messages);
     }
 
     public function testGetEmergencyMessages()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::EMERGENCY)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::INFO)]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::EMERGENCY));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collectionHandler->getEmergencyMessages());
+        $messages = $this->collectionHandler->getEmergencyMessages();
 
-        $this->assertEquals(1, $result);
+        $this->assertCount(1, $messages);
     }
 
     public function testGeAlertMessages()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::INFO)]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collectionHandler->getAlertMessages());
+        $messages = $this->collectionHandler->getAlertMessages();
 
-        $this->assertEquals(3, $result);
+        $this->assertCount(3, $messages);
     }
 
     public function testGetCriticalMessages()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::CRITICAL)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::CRITICAL)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::CRITICAL)]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::CRITICAL));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::CRITICAL));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::CRITICAL));
 
-        $result = count($this->collectionHandler->getCriticalMessages());
+        $messages = $this->collectionHandler->getCriticalMessages();
 
-        $this->assertEquals(3, $result);
+        $this->assertCount(3, $messages);
     }
 
     public function testGetErrorMessages()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ERROR)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ERROR)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::INFO)]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ERROR));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ERROR));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collectionHandler->getErrorMessages());
+        $messages = $this->collectionHandler->getErrorMessages();
 
-        $this->assertEquals(2, $result);
+        $this->assertCount(2, $messages);
     }
 
     public function testGetWarningMessages()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::WARNING)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::WARNING));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
 
-        $result = count($this->collectionHandler->getWarningMessages());
+        $messages = $this->collectionHandler->getWarningMessages();
 
-        $this->assertEquals(1, $result);
+        $this->assertCount(1, $messages);
     }
 
     public function testGetNoticeMessages()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::NOTICE)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ERROR)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::NOTICE)]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::NOTICE));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ERROR));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::NOTICE));
 
-        $result = count($this->collectionHandler->getNoticeMessages());
+        $messages = $this->collectionHandler->getNoticeMessages();
 
-        $this->assertEquals(2, $result);
+        $this->assertCount(2, $messages);
     }
 
     public function testGetInfoMessages()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::ALERT)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::INFO)]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::ALERT));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collectionHandler->getInfoMessages());
+        $messages = $this->collectionHandler->getInfoMessages();
 
-        $this->assertEquals(1, $result);
+        $this->assertCount(1, $messages);
     }
 
     public function testGetDebugMessages()
     {
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::DEBUG)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::DEBUG)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::DEBUG)]);
-        call_user_func_array($this->collectionHandler, [$this->getMessageInstance(LogLevel::INFO)]);
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::DEBUG));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::DEBUG));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::DEBUG));
+        call_user_func($this->collectionHandler, $this->getMessageInstance(LogLevel::INFO));
 
-        $result = count($this->collectionHandler->getDebugMessages());
+        $messages = $this->collectionHandler->getDebugMessages();
 
-        $this->assertEquals(3, $result);
+        $this->assertCount(3, $messages);
     }
 }
