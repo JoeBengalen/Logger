@@ -9,8 +9,9 @@
  * @version     0.1.0
  */
 
-namespace JoeBengalen\Logger;
+namespace JoeBengalen\Logger\Handler;
 
+use JoeBengalen\Logger\MessageInterface;
 use Psr\Log\LogLevel;
 
 /**
@@ -18,7 +19,7 @@ use Psr\Log\LogLevel;
  *
  * Collector of MessageInterface instances, which can be retrieved by their log level
  */
-class Collection implements CollectionInterface
+class CollectionHandler extends AbstractHandler
 {
     /**
      * @var \JoeBengalen\Logger\MessageInterface[] List of messages
@@ -30,7 +31,7 @@ class Collection implements CollectionInterface
      *
      * @param \JoeBengalen\Logger\MessageInterface $message Log message
      */
-    public function addMessage(MessageInterface $message)
+    public function __invoke(MessageInterface $message)
     {
         $this->messages[] = $message;
     }
