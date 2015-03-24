@@ -3,7 +3,6 @@ namespace JoeBengalen\Logger\Test;
 
 use JoeBengalen\Logger;
 use JoeBengalen\Logger\MessageInterface;
-use JoeBengalen\Logger\CollectionInterface;
 use Psr\Log\LogLevel;
 
 function namedFunction(MessageInterface $message) {
@@ -116,55 +115,6 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         
         $logger = new Logger\Logger([
             'nonExistingHandler'
-        ]);
-    }
-    
-    public function testDefaultCollection()
-    {
-        $logger = new Logger\Logger();
-
-        $this->assertTrue($logger->getCollection() instanceof CollectionInterface);
-    }
-    
-    public function testCustomCollection()
-    {
-        $mock = $this->getMock('\JoeBengalen\Logger\CollectionInterface');
-
-        $logger = new Logger\Logger([], [
-            'collection.factory' => function() use ($mock) {
-                return $mock;
-            }
-        ]);
-
-        $this->assertEquals($mock, $logger->getCollection());
-    }
-    
-    public function testNoCollection()
-    {
-        $logger = new Logger\Logger([], [
-            'collection.factory' => null
-        ]);
-
-        $this->assertNull($logger->getCollection());
-    }
-    
-    public function testNonCallableCollectionFactory()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-                
-        $logger = new Logger\Logger([], [
-            'collection.factory' => false
-        ]);
-    }
-    
-    public function testNonInterfaceReturningCollectionFactory()
-    {
-        $this->setExpectedException('RuntimeException');
-                
-        $logger = new Logger\Logger([], [
-            'collection.factory' => function () {
-                return 'invalid';
-            }
         ]);
     }
     
@@ -323,7 +273,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testLogCustomMessageFactoryNoMessageReturned()
     {
-        $this->setExpectedException('\RuntimeException');
+        $this->setExpectedException('\UnexpectedValueException');
         
         $logger = new Logger\Logger([], [
             'message.factory' => function () {

@@ -32,12 +32,9 @@ class Logger implements LoggerInterface
     
     /**
      * @var array $options {
-     *      @var callable $message.factory          Alternative MessageInterface factory.
-     *                                              Callable arguments: mixed $level, string $message, array $context
-     *                                              Callable MUST return an instance of MessageInterface.
-     *      @var callable|null $collection.factory  Alternative CollectionInterface factory.
-     *                                              Callable MUST return an instance of CollectionInterface.
-     *                                              Null means no collection will be used.
+     *      @var callable $message.factory Alternative MessageInterface factory.
+     *                                     Callable arguments: mixed $level, string $message, array $context
+     *                                     Callable MUST return an instance of MessageInterface.
      * }
      */
     protected $options;
@@ -48,27 +45,17 @@ class Logger implements LoggerInterface
     protected $handlers = [];
 
     /**
-     * @var \JoeBengalen\Logger\CollectionInterface Log message collector
-     */
-    protected $collection;
-
-    /**
      * Create a logger instance and register handlers.
      *
      * @param callable[] $handlers (optional)    List of callable handlers
      * @param array      $options  (optional)     {
-     *      @var callable $message.factory          Alternative MessageInterface factory.
-     *                                              Callable arguments: mixed $level, string $message, array $context
-     *                                              Callable MUST return an instance of MessageInterface.
-     *      @var callable|null $collection.factory  Alternative CollectionInterface factory.
-     *                                              Callable MUST return an instance of CollectionInterface.
-     *                                              Null means no collection will be used.
+     *      @var callable $message.factory Alternative MessageInterface factory.
+     *                                     Callable arguments: mixed $level, string $message, array $context
+     *                                     Callable MUST return an instance of MessageInterface.
      * }
      *
      * @throws \InvalidArgumentException If any handler is not callable
      * @throws \InvalidArgumentException If option message.factory is not a callable
-     * @throws \InvalidArgumentException If option collection.factory is not a callable or null
-     * @throws \RuntimeException         If callable option collection.factory does not return an instance of \JoeBengalen\Logger\CollectionInterface
      */
     public function __construct(array $handlers = [], array $options = [])
     {
@@ -87,11 +74,6 @@ class Logger implements LoggerInterface
                 return new Message($level, $message, $context);
             },
             
-            // CollectionInterface factory callable
-            'collection.factory' => function () {
-                return new Collection();
-            },
-            
         ], $options);
 
         // check if option message.factory is a callable
@@ -99,13 +81,7 @@ class Logger implements LoggerInterface
             throw new \InvalidArgumentException("Option 'message.factory' must contain a callable");
         }
 
-        // check if option collection.factory is null or a callable
-        if (!is_null($this->options['collection.factory']) && !is_callable($this->options['collection.factory'])) {
-            throw new \InvalidArgumentException("Option 'collection.factory' must contain a callable or be null");
-        }
-
-        $this->handlers   = $handlers;
-        $this->collection = $this->createCollection();
+        $this->handlers = $handlers;
     }
 
     /**
@@ -116,27 +92,12 @@ class Logger implements LoggerInterface
      * @param array  $context Context values sent along with the message
      *
      * @throws \Psr\Log\InvalidArgumentException If the $level is not defined in \Psr\Log\LogLevel
-     * @throws \RuntimeException                 If callable option 'message.factory' does not return an instance of \JoeBengalen\Logger\MessageInterface
+     * @throws \UnexpectedValueException         If callable option 'message.factory' does not return an instance of \JoeBengalen\Logger\MessageInterface
      */
     public function log($level, $message, array $context = [])
     {
         $messageInstance = $this->createMessage($level, $message, $context);
-
-        if (!is_null($this->collection)) {
-            $this->collection->addMessage($messageInstance);
-        }
-
         $this->callHandlers($messageInstance);
-    }
-
-    /**
-     * Get the message collection.
-     *
-     * @return \JoeBengalen\Logger\CollectionInterface|null $collection Log message collection or null if not used
-     */
-    public function getCollection()
-    {
-        return $this->collection;
     }
 
     /**
@@ -160,36 +121,16 @@ class Logger implements LoggerInterface
      *
      * @return \JoeBengalen\Logger\MessageInterface
      *
-     * @throws \RuntimeException If callable option 'message.factory' does not return an instance of \JoeBengalen\Logger\MessageInterface
+     * @throws \UnexpectedValueException If callable option 'message.factory' does not return an instance of \JoeBengalen\Logger\MessageInterface
      */
     protected function createMessage($level, $message, array $context)
     {
         $messageInstance = call_user_func_array($this->options['message.factory'], [$level, $message, $context]);
 
         if (!$messageInstance instanceof MessageInterface) {
-            throw new \RuntimeException("Option 'message.factory' callable must return an instance of \JoeBengalen\Logger\MessageInterface");
+            throw new \UnexpectedValueException("Option 'message.factory' callable must return an instance of \JoeBengalen\Logger\MessageInterface");
         }
 
         return $messageInstance;
-    }
-
-    /**
-     * Create a new collection.
-     *
-     * @return \JoeBengalen\Logger\CollectionInterface|null
-     *
-     * @throws \RuntimeException If callable option collection.factory does not return an instance of \JoeBengalen\Logger\CollectionInterface
-     */
-    protected function createCollection()
-    {
-        if (!is_null($this->options['collection.factory'])) {
-            $collection = call_user_func($this->options['collection.factory']);
-
-            if (!$collection instanceof CollectionInterface) {
-                throw new \RuntimeException("Option 'message.factory' callable must return an instance of \JoeBengalen\Logger\CollectionInterface");
-            }
-
-            return $collection;
-        }
     }
 }
